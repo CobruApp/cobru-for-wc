@@ -40,35 +40,41 @@ function cobru_load_class()
 			$this->publishable_key = $this->testmode ? $this->get_option('test_publishable_key') : $this->get_option('publishable_key');
 
 			// ocastellar 01/09/2021  metodos de pago
-			$this->baloto      = 'yes' === $this->get_option('baloto');
-			$this->efecty      = 'yes' === $this->get_option('efecty');
+			$this->nequi  = 'yes' === $this->get_option('nequi');
 			$this->pse         = 'yes' === $this->get_option('pse');
+			$this->daviplata  = 'yes' === $this->get_option('daviplata');
 			$this->credit_card = 'yes' === $this->get_option('credit_card');
+			$this->bancolombia_transfer  = 'yes' === $this->get_option('bancolombia_transfer');
+			$this->bancolombia_qr  = 'yes' === $this->get_option('bancolombia_qr');
+			$this->efecty      = 'yes' === $this->get_option('efecty');
 			$this->corresponsal_bancolombia = 'yes' === $this->get_option('corresponsal_bancolombia');
+			$this->dale        = 'yes' === $this->get_option('dale');
+
+			$this->cobru       = 'yes' === $this->get_option('cobru');
+			// $this->baloto      = 'yes' === $this->get_option('baloto');
+
 			$this->BTC         = 'yes' === $this->get_option('BTC');
 			$this->BCH         = 'yes' === $this->get_option('BCH');
 			$this->DASH        = 'yes' === $this->get_option('DASH');
-			$this->cobru       = 'yes' === $this->get_option('cobru');
 
 
-			$this->dale        = 'yes' === $this->get_option('dale');
-			$this->bancolombia_transfer  = 'yes' === $this->get_option('bancolombia_transfer');
-			$this->bancolombia_qr  = 'yes' === $this->get_option('bancolombia_qr');
-			$this->nequi  = 'yes' === $this->get_option('nequi');
 
-			$s  = '{"baloto": ' . (boolval($this->baloto) ? 'true' : 'false') . ', ';
-			$s  =  $s . '"efecty": ' . (boolval($this->efecty) ? 'true' : 'false') . ', ';
-			$s  =  $s . '"pse": ' . (boolval($this->pse) ? 'true' : 'false') . ', ';
-			$s  =  $s . '"credit_card": ' . (boolval($this->credit_card) ? 'true' : 'false') . ', ';
-			$s  =  $s . '"corresponsal_bancolombia": ' . (boolval($this->corresponsal_bancolombia) ? 'true' : 'false') . ', ';
-			$s  =  $s . '"BTC": ' . (boolval($this->BTC) ? 'true' : 'false') . ', ';
-			$s  =  $s . '"BCH": ' . (boolval($this->BCH) ? 'true' : 'false') . ', ';
-			$s  =  $s . '"DASH": ' . (boolval($this->DASH) ? 'true' : 'false') . ', ';
-			$s  =  $s . '"cobru": ' . (boolval($this->cobru) ? 'true' : 'false') . ', ';
-			$s  =  $s . '"NEQUI": ' . (boolval($this->nequi) ? 'true' : 'false') . ', ';
-			$s  =  $s . '"bancolombia_transfer": ' . (boolval($this->bancolombia_transfer) ? 'true' : 'false') . ', ';
-			$s  =  $s . '"bancolombia_qr": ' . (boolval($this->bancolombia_qr) ? 'true' : 'false') . ', ';
-			$s  =  $s . '"dale": ' . (boolval($this->dale) ? 'true' : 'false') . '}';
+			$s  =  '{ "NEQUI": ' . (boolval($this->nequi) ? 'true' : 'false') . ', ';
+			$s  .= '"pse": ' . (boolval($this->pse) ? 'true' : 'false') . ', ';
+			$s  .= '"daviplata": ' . (boolval($this->daviplata) ? 'true' : 'false') . ', ';
+			$s  .= '"credit_card": ' . (boolval($this->credit_card) ? 'true' : 'false') . ', ';
+			$s  .= '"bancolombia_transfer": ' . (boolval($this->bancolombia_transfer) ? 'true' : 'false') . ', ';
+			$s  .= '"bancolombia_qr": ' . (boolval($this->bancolombia_qr) ? 'true' : 'false') . ', ';
+			$s  .= '"efecty": ' . (boolval($this->efecty) ? 'true' : 'false') . ', ';
+			$s  .= '"corresponsal_bancolombia": ' . (boolval($this->corresponsal_bancolombia) ? 'true' : 'false') . ', ';
+			$s  .= '"dale": ' . (boolval($this->dale) ? 'true' : 'false') . ', ';
+
+			$s  .= '"cobru": ' . (boolval($this->cobru) ? 'true' : 'false') . ', ';
+			// $s  = '"baloto": ' . (boolval($this->baloto) ? 'true' : 'false') . ', ';
+
+			$s  .= '"BTC": ' . (boolval($this->BTC) ? 'true' : 'false') . ', ';
+			$s  .= '"BCH": ' . (boolval($this->BCH) ? 'true' : 'false') . ', ';
+			$s  .= '"DASH": ' . (boolval($this->DASH) ? 'true' : 'false') . '} ';
 
 
 
@@ -153,11 +159,9 @@ function cobru_load_class()
 					'title' => __('Live X-API-KEY', 'cobru'),
 					'type'  => 'password'
 				],
-				'cobru'              => [
-					'title'       => __('Payment methods', 'cobru'),
-					'desc_tip' => __('Choose the available payment methods in your store.', 'woocommerce-mercadopago'),
-					'label'       => __('Cobru', 'cobru'),
-					'id'          => __('woocommerce_cobru_cobru', 'cobru'),
+				'NEQUI'           => [
+					'label'       => __('NEQUI', 'cobru'),
+					'id'          => "nequi",
 					'type'        => 'checkbox',
 					'class'       => 'online_payment_method',
 					'description' => '',
@@ -167,9 +171,19 @@ function cobru_load_class()
 					'default'           => 'yes'
 				],
 				'pse'              => [
-
 					'label'       => __('PSE', 'cobru'),
 					'id'          => __('woocommerce_cobru_pse', 'cobru'),
+					'type'        => 'checkbox',
+					'class'       => 'online_payment_method',
+					'description' => '',
+					'custom_attributes' => array(
+						'data-translate' => __('Select payment methods', 'cobru'),
+					),
+					'default'           => 'yes'
+				],
+				'daviplata'           => [
+					'label'       => __('Daviplata', 'cobru'),
+					'id'          => "daviplata",
 					'type'        => 'checkbox',
 					'class'       => 'online_payment_method',
 					'description' => '',
@@ -190,10 +204,22 @@ function cobru_load_class()
 					),
 					'default'           => 'yes'
 				],
-				'baloto'              => [
+				'bancolombia_transfer'              => [
 
-					'label'       => __('Baloto', 'cobru'),
-					'id'          => __('woocommerce_cobru_baloto', 'cobru'),
+					'label'       => __('Botón Bancolombia', 'cobru'),
+					'id'          => "bancolombia_transfer",
+					'type'        => 'checkbox',
+					'class'       => 'online_payment_method',
+					'description' => '',
+					'custom_attributes' => array(
+						'data-translate' => __('Select payment methods', 'cobru'),
+					),
+					'default'           => 'yes'
+				],
+				'bancolombia_qr'              => [
+
+					'label'       => __('Bancolombia QR', 'cobru'),
+					'id'          => "bancolombia_qr",
 					'type'        => 'checkbox',
 					'class'       => 'online_payment_method',
 					'description' => '',
@@ -218,6 +244,31 @@ function cobru_load_class()
 
 					'label'       => __('Corresponsal Bancolombia', 'cobru'),
 					'id'          => __('woocommerce_cobru_corresponsal_bancolombia', 'cobru'),
+					'type'        => 'checkbox',
+					'class'       => 'online_payment_method',
+					'description' => '',
+					'custom_attributes' => array(
+						'data-translate' => __('Select payment methods', 'cobru'),
+					),
+					'default'           => 'yes'
+				],
+				'dale'            => [
+
+					'label'       => __('DALE!', 'cobru'),
+					'id'          => "dale",
+					'type'        => 'checkbox',
+					'class'       => 'online_payment_method',
+					'description' => '',
+					'custom_attributes' => array(
+						'data-translate' => __('Select payment methods', 'cobru'),
+					),
+					'default'           => 'yes'
+				],
+				'cobru'              => [
+					'title'       => __('Payment methods', 'cobru'),
+					'desc_tip' => __('Choose the available payment methods in your store.', 'woocommerce-mercadopago'),
+					'label'       => __('Cobru', 'cobru'),
+					'id'          => __('woocommerce_cobru_cobru', 'cobru'),
 					'type'        => 'checkbox',
 					'class'       => 'online_payment_method',
 					'description' => '',
@@ -262,61 +313,18 @@ function cobru_load_class()
 					),
 					'default'           => 'yes'
 				],
+				// 'baloto'              => [
 
-				'NEQUI'           => [
-
-					'label'       => __('NEQUI', 'cobru'),
-					'id'          => "nequi",
-					'type'        => 'checkbox',
-					'class'       => 'online_payment_method',
-					'description' => '',
-					'custom_attributes' => array(
-						'data-translate' => __('Select payment methods', 'cobru'),
-					),
-					'default'           => 'yes'
-				],
-
-				'dale'            => [
-
-					'label'       => __('DALE!', 'cobru'),
-					'id'          => "dale",
-					'type'        => 'checkbox',
-					'class'       => 'online_payment_method',
-					'description' => '',
-					'custom_attributes' => array(
-						'data-translate' => __('Select payment methods', 'cobru'),
-					),
-					'default'           => 'yes'
-				],
-
-
-				'bancolombia_transfer'              => [
-
-					'label'       => __('Botón Bancolombia', 'cobru'),
-					'id'          => "bancolombia_transfer",
-					'type'        => 'checkbox',
-					'class'       => 'online_payment_method',
-					'description' => '',
-					'custom_attributes' => array(
-						'data-translate' => __('Select payment methods', 'cobru'),
-					),
-					'default'           => 'yes'
-				],
-				'bancolombia_qr'              => [
-
-					'label'       => __('Bancolombia QR', 'cobru'),
-					'id'          => "bancolombia_qr",
-					'type'        => 'checkbox',
-					'class'       => 'online_payment_method',
-					'description' => '',
-					'custom_attributes' => array(
-						'data-translate' => __('Select payment methods', 'cobru'),
-					),
-					'default'           => 'yes'
-				],
-
-
-
+				// 	'label'       => __('Baloto', 'cobru'),
+				// 	'id'          => __('woocommerce_cobru_baloto', 'cobru'),
+				// 	'type'        => 'checkbox',
+				// 	'class'       => 'online_payment_method',
+				// 	'description' => '',
+				// 	'custom_attributes' => array(
+				// 		'data-translate' => __('Select payment methods', 'cobru'),
+				// 	),
+				// 	'default'           => 'yes'
+				// ],
 
 				'status_to_set'        => [
 					'title'   => __('Status to set after payment', 'cobru'),
