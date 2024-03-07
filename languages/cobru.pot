@@ -1,0 +1,111 @@
+# Copyright (C) 2019 Miguel Useche
+# This file is distributed under the same license as the WooCommerce Cobru Gateway plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce Cobru Gateway 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woocommerce-gateway-cobru\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2019-10-29T01:45:42+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.3.0\n"
+"X-Domain: cobru\n"
+
+#. Plugin Name of the plugin
+msgid "WooCommerce Cobru Gateway"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://www.cobru.co/"
+msgstr ""
+
+#. Description of the plugin
+msgid "WooCommerce implementation of Cobru Gateway"
+msgstr ""
+
+#. Author of the plugin
+msgid "Miguel Useche"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://migueluseche.com"
+msgstr ""
+
+#: classes/class-wc-cobru-api.php:132
+msgid "Cobru created"
+msgstr ""
+
+#: classes/class-wc-cobru-rest-api.php:43
+msgid "Payment approved"
+msgstr ""
+
+#: classes/class-wc-cobru-rest-api.php:46
+msgid "Payment not approved"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:22
+msgid "Accept multiple payments in seconds."
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:59
+msgid "Enable/Disable"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:60
+msgid "Enable Cobru Gateway"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:66
+msgid "Title"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:68
+msgid "This controls the title which the user sees during checkout."
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:69
+msgid "Pay with any currency"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:73
+msgid "Description"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:75
+msgid "This controls the description which the user sees during checkout."
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:76
+msgid "Pay with any currency with Cobru."
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:79
+msgid "Test mode"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:80
+msgid "Enable Test Mode"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:82
+msgid "Place the payment gateway in test mode using test API keys."
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:95
+msgid "Test Token"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:99
+msgid "Test Secret Key"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:103
+msgid "Live Token"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:107
+msgid "Live Secret Key"
+msgstr ""
