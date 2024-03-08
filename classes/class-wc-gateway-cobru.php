@@ -59,7 +59,8 @@ function cobru_load_class()
 
 
 
-			$s  =  '{ "NEQUI": ' . (boolval($this->nequi) ? 'true' : 'false') . ', ';
+			$s  =  '{';
+			$s  .= '"NEQUI": ' . (boolval($this->nequi) ? 'true' : 'false') . ', ';
 			$s  .= '"pse": ' . (boolval($this->pse) ? 'true' : 'false') . ', ';
 			$s  .= '"daviplata": ' . (boolval($this->daviplata) ? 'true' : 'false') . ', ';
 			$s  .= '"credit_card": ' . (boolval($this->credit_card) ? 'true' : 'false') . ', ';
