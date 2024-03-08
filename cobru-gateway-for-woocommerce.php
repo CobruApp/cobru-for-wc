@@ -1,10 +1,10 @@
 <?php
 /*
- * Plugin Name: WooCommerce Cobru Gateway (1)
- * Plugin URI: https://www.cobru.co/
+ * Plugin Name: Cobru Gateway for WooCommerce
+ * Plugin URI: https://cobru.co/desarrolladores/
  * Description: WooCommerce implementation of Cobru Gateway
- * Author: Osvaldo Castellar
- * Author URI: https://cobru.co
+ * Author: COBRU.CO
+ * Author URI: https://github.com/0kCobru/woocommerce
  * Text Domain: cobru
  * Version: 1.1.0
  */
