@@ -7,6 +7,7 @@
  * Author URI: https://github.com/0kCobru/woocommerce
  * Text Domain: cobru
  * Version: 1.2.0
+ * 
  */
 
 include 'classes/class-wc-cobru-api.php';
