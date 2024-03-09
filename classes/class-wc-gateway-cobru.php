@@ -20,7 +20,7 @@ function cobru_load_class()
 		public function __construct()
 		{
 			$this->id                 = 'cobru';
-			$this->icon               = WP_PLUGIN_URL . '/woocommerce-gateway-cobru/assets/img/cobru-logo.png';
+			$this->icon               = COBRU_PLUGIN_URL . '/assets/img/cobru-logo.png'; // JD FIX
 			$this->has_fields         = false;
 			$this->method_title       = 'Cobru';
 			$this->method_description = __('Accept multiple payments in seconds.', 'cobru');
