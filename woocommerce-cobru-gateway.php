@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: WooCommerce Cobru Gateway
+ * Plugin Name: Cobru Gateway for WC
  * Plugin URI: https://cobru.co/desarrolladores/
  * Description: WooCommerce implementation of Cobru API Gateway
  * Author: COBRU.CO
