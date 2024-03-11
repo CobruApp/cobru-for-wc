@@ -1,12 +1,9 @@
-
 # What is Cobru?
-
 Cobru is a web platform made to quickly create and manage online transactions, by providing multiple payment methods both proprietary and third party.
 
 The platform works by combining a Python/Django Backend, a React Native iOS/Android mobile application and some Vue.js web views.
 
 ## Cobru’s products
-
 Cobru users have access to:
 
 * Cobru App: The mobile app, where users can request payments (these are called Cobru) from others or pay Cobrus.
@@ -34,3 +31,6 @@ If we want to conduct tests in the development environment, at the login panel, 
 If you want to perform tests in the development environment with the Cobru application, you can download the app at https://cobru.co/download/. In the app, when you log in, you will find a toggle or switch that allows you to switch between environments, bearing in mind that the login credentials can only be used in the environment in which they were created.
 
 NOTE: Both in the panel and in the app, the default environment is production.
+
+## Copyright and License
+This project is licensed under the [GNU GPL](https://www.gnu.org/licenses/gpl-3.0.html), version 3 or later
