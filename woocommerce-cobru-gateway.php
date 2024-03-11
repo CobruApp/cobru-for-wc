@@ -7,7 +7,8 @@
  * Author URI: https://github.com/0kCobru/woocommerce
  * Text Domain: cobru
  * Version: 1.2.3
- * 
+ * License: GPLv3
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  */
 
 include 'classes/class-wc-cobru-api.php';
