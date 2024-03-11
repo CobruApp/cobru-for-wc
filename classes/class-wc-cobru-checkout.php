@@ -1,4 +1,13 @@
 <?php
+
+/**
+ * WC_Cobru_Checkout
+ *
+ * Class to handle all API interactions.
+ *
+ * @since 1.0
+ */
+
 class WC_Cobru_Checkout
 {
 	/**
@@ -41,8 +50,8 @@ class WC_Cobru_Checkout
 				'cobru',
 				COBRU_PLUGIN_URL . 'assets/js/cobru.js',
 				['jquery'],
-				'1.0',
-				true
+				COBRU_PLUGIN_VER,
+				['in_footer' => true]
 			);
 		}
 	}

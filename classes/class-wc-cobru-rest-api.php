@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * WC_Cobru_Rest_Api
+ *
+ * Class to implement WP API Rest.
+ *
+ * @since 1.0
+ */
+
 class WC_Cobru_Rest_Api extends WP_REST_Controller
 {
 
@@ -37,42 +45,41 @@ class WC_Cobru_Rest_Api extends WP_REST_Controller
             ]
         ]);*/
         $order     = wc_get_order($data['orderId']); // ocastellar 2021/08/23
-       // if (is_array($orders) && count($orders)) { NO aplica por que siempre debe venir un id
-          //  $order = $orders[0]; ya no es un array
+        // if (is_array($orders) && count($orders)) { NO aplica por que siempre debe venir un id
+        //  $order = $orders[0]; ya no es un array
 
-            if (array_key_exists('state', $data) && $data['state'] == 3) {
-                try {
-                     // $options        = get_option('woocommerce_cobru_settings');
-                     // $cobru_settings = unserialize($options); $cobru_settings['status_to_set']
-					 $order_status   = 'processing';
-           // mark order completed or processing 
-					    if ( $data['amount']  <= 500000) {
-					     $order_status   = 'completed';
-					  } else {
-                         $order_status   = 'processing';
-                      }
-
-					 // $order_status   = $order_status;
-                } catch (Throwable $e) {
-                    $order_status = WC_Gateway_Cobru::DEFAULT_STATUS;
-					$note   = __('Pago cancelado', 'cobru-for-wc');
+        if (array_key_exists('state', $data) && $data['state'] == 3) {
+            try {
+                // $options        = get_option('woocommerce_cobru_settings');
+                // $cobru_settings = unserialize($options); $cobru_settings['status_to_set']
+                $order_status   = 'processing';
+                // mark order completed or processing 
+                if ($data['amount']  <= 500000) {
+                    $order_status   = 'completed';
+                } else {
+                    $order_status   = 'processing';
                 }
 
-                $note   = __('Pago aprobado', 'cobru-for-wc');
-            } else {
-                $order_status = 'failed';
-		        $resultados = print_r($data, true);
-                $note   = $resultados;
+                // $order_status   = $order_status;
+            } catch (Throwable $e) {
+                $order_status = WC_Gateway_Cobru::DEFAULT_STATUS;
+                $note   = __('Pago cancelado', 'cobru-for-wc');
             }
 
-            $order->set_status($order_status);
-            $order->save();
-            $order->add_order_note($note, false);
-       // }   no aplica
+            $note   = __('Pago aprobado', 'cobru-for-wc');
+        } else {
+            $order_status = 'failed';
+            $resultados = print_r($data, true);
+            $note   = $resultados;
+        }
+
+        $order->set_status($order_status);
+        $order->save();
+        $order->add_order_note($note, false);
+        // }   no aplica
 
         try {
             return new WP_REST_Response($data, 200);
-
         } catch (Exception $e) {
             return new WP_Error('cant-create', __('message', 'text-domain'), ['status' => 500]);
         }

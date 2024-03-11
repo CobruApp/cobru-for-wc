@@ -1,9 +1,14 @@
 <?php
-
 /**
- * Class to handle all API interactions
- **/
-class WC_Cobru_API {
+ * WC_Cobru_API
+ *
+ * Class to handle all API interactions.
+ *
+ * @since 1.0
+ */
+
+class WC_Cobru_API
+{
 	const BEARER = 'cobru-bearer';
 	const OPTION_REFRESH = 'cobru-refresh';
 
@@ -12,9 +17,10 @@ class WC_Cobru_API {
 	public $token;
 	public $secret;
 	public $bearer = false;
-    public $payment_method_enabled;
-	
-	public function __construct( $testmode, $refresh_token, $token, $secret, $payment_method_enabled ) {
+	public $payment_method_enabled;
+
+	public function __construct($testmode, $refresh_token, $token, $secret, $payment_method_enabled)
+	{
 		$this->api_url  = $testmode ? 'https://dev.cobru.co/' : 'https://prod.cobru.co/';
 		$this->refresh_token    = $refresh_token;
 		$this->token    = $token;
@@ -22,62 +28,63 @@ class WC_Cobru_API {
 		$this->payment_method_enabled   = $payment_method_enabled;
 	}
 
-	public function url( $path ) {
+	public function url($path)
+	{
 		return $this->api_url . $path;
 	}
 
-	protected function get_header( $include_bearer = true ) {
+	protected function get_header($include_bearer = true)
+	{
 		$headers = [
 			'Accept'         => 'application/json',
 			'Content-Type'   => 'application/json',
 			'Api-Token'      => $this->token,
 			'Api-Secret-Key' => $this->secret
 		];
-        // Comento esto temporalmente para pruebas
-		if ( $include_bearer ) {
+		// Comento esto temporalmente para pruebas
+		if ($include_bearer) {
 			$headers['Authorization'] = 'Bearer ' . $this->get_bearer();
 		}
 
 		return $headers;
 	}
 
-	public function get_bearer() {
+	public function get_bearer()
+	{
 		$bearer = false; //get_transient(self::BEARER);
 
 
-		if ( $bearer === false ) {
-			 
-			 $refresh = get_option( self::OPTION_REFRESH, false );
+		if ($bearer === false) {
 
-			if ( $refresh ) {
-				$response = wp_remote_post( $this->url( '/token/refresh/' ), [
+			$refresh = get_option(self::OPTION_REFRESH, false);
+
+			if ($refresh) {
+				$response = wp_remote_post($this->url('/token/refresh/'), [
 					'method'  => 'POST',
-					'headers' => $this->get_header( false ),
-					'body'    => wp_json_encode( [
+					'headers' => $this->get_header(false),
+					'body'    => wp_json_encode([
 						'refresh' => $this->refresh_token,
-					] ),
-				] );
+					]),
+				]);
 
-				if ( is_wp_error( $response ) ) {
+				if (is_wp_error($response)) {
 					$error_message = $response->get_error_message();
-					echo esc_html(__( "Something went wrong: ", 'cobru-for-wc' ) . $error_message);
+					echo esc_html(__("Something went wrong: ", 'cobru-for-wc') . $error_message);
 
 					return;
 				} else {
-					$data   = json_decode( $response['body'] );
+					$data   = json_decode($response['body']);
 					$bearer = $data->access;
-				 
 				}
 			} else {
-                    $bearer  = $data->access;
-					$refresh = $this->refresh_token;
-					update_option( self::OPTION_REFRESH, $refresh );
-				 
+				$bearer  = $data->access;
+				$refresh = $this->refresh_token;
+				update_option(self::OPTION_REFRESH, $refresh);
 			}
 		}
 
-		if ( ! empty( $bearer ) ) {
-			set_transient( self::BEARER, $bearer, 14 * MINUTE_IN_SECONDS );
+		if (!empty($bearer)) {
+			set_transient(self::BEARER, $bearer, 14 * MINUTE_IN_SECONDS);
 		}
 
 		return $bearer;
@@ -85,42 +92,48 @@ class WC_Cobru_API {
 	/**
 	 * Creates cobru and retrieves URL to redirect.
 	 **/
-	public function create_cobru( $order ) {
-		
-		$items = $order->get_items();
-        $localidades = "";
+	public function create_cobru($order)
+	{
 
-		foreach ( $items as $item ) {
-			$product = wc_get_product( $item['product_id'] );
-            $localidades = $localidades . ', ' . $product->get_name();
-			$event = new TC_Event($product->get_meta('_event_name')); 
-	    }
-		 $args = [
-			'amount'                 => round( $order->get_total() ),
-			'description'            => __( 'Order', 'woocommerce' ) . ' #' . $order->get_order_number() . ' :: '. $event->details->post_title, // JD FIX
+		$items = $order->get_items();
+		$localidades = "";
+
+		foreach ($items as $item) {
+			$product = wc_get_product($item['product_id']);
+			$localidades = $localidades . ', ' . $product->get_name();
+			// TICKERA FIX FOR NON EVENTU SITES
+			if (class_exists('TC_Event')) {
+				$event = new TC_Event($product->get_meta('_event_name'));
+			} else {
+				$event = false;
+			}
+		}
+		$args = [
+			'amount'                 => round($order->get_total()),
+			'description'            => __('Order', 'woocommerce') . ' #' . $order->get_order_number() . (($event === false) ? '' : ' :: ' . $event->details->post_title), // TICKERA FIX FOR NON EVENTU SITES
 			'expiration_days'        => 0,
 			'client_assume_costs'    => false,
 			'payment_method_enabled' => $this->payment_method_enabled,
-            'iva'               	 => 0,
+			'iva'               	 => 0,
 			'platform'               => "API",
 			'payer_redirect_url'     => $order->get_checkout_order_received_url(),
 			'callback'               => get_home_url() . '/wp-json/wc/v4/cobru?orderId=' . $order->get_order_number()
 		];
- 
-		
-		$response = wp_remote_post( $this->url( '/cobru/' ), [
+
+
+		$response = wp_remote_post($this->url('/cobru/'), [
 			'method'  => 'POST',
 			'headers' => $this->get_header(),
-			'body'    => wp_json_encode( $args ),
-		] );
+			'body'    => wp_json_encode($args),
+		]);
 
-		if ( is_wp_error( $response ) || isset( $response['response'] ) && $response['response']['code'] != 201 ) {
-			if ( is_wp_error( $response ) ) {
+		if (is_wp_error($response) || isset($response['response']) && $response['response']['code'] != 201) {
+			if (is_wp_error($response)) {
 				$error_message = $response->get_error_message();
 			} else {
-				 
-				$data          = json_decode( $response['body'] );
-				$error_message = is_object( $data ) ? $data->detail : $response['body'];
+
+				$data          = json_decode($response['body']);
+				$error_message = is_object($data) ? $data->detail : $response['body'];
 			}
 
 			return [
@@ -128,12 +141,12 @@ class WC_Cobru_API {
 				'message' => $error_message
 			];
 		} else {
-			$data = json_decode( $response['body'] );
-            
-			if ( $data ) {
+			$data = json_decode($response['body']);
+
+			if ($data) {
 				return [
 					'result'     => 'success',
-					'message'    => __( 'Cobru created', 'cobru-for-wc' ),
+					'message'    => __('Cobru created', 'cobru-for-wc'),
 					'pk'         => $data->pk,
 					'url'        => $data->url,
 					'fee_amount' => $data->fee_amount,

@@ -1,8 +1,13 @@
 <?php
 
 /**
+ * WC_Gateway_Cobru
+ *
  * Class to handle Cobru events.
+ *
+ * @since 1.0
  */
+
 add_action('plugins_loaded', 'cobru_load_class');
 function cobru_load_class()
 {
@@ -374,7 +379,7 @@ function cobru_load_class()
 				'cobru-for-wc',
 				COBRU_PLUGIN_URL . '/assets/js/cobru.js',
 				['jquery'],
-				$this::VERSION,
+				COBRU_PLUGIN_VER,
 				['in_footer' => true]
 			);
 			wp_localize_script('cobru-for-wc', 'auth', [
