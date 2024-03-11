@@ -4,7 +4,7 @@
  * Plugin URI: https://cobru.co/desarrolladores/
  * Description: WooCommerce implementation of Cobru API Gateway
  * Author: COBRU.CO
- * Author URI: https://github.com/0kCobru/woocommerce
+ * Author URI: https://github.com/CobruApp/cobru-for-wc
  * Text Domain: cobru-for-wc
  * Version: 1.2.4
  * License: GPLv3
