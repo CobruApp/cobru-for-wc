@@ -97,7 +97,7 @@ class WC_Cobru_API {
 	    }
 		 $args = [
 			'amount'                 => round( $order->get_total() ),
-			'description'            => __( 'Order', 'woocommerce' ) . ' #' . $order->get_order_number() . $event->details->post_title,
+			'description'            => __( 'Order', 'woocommerce' ) . ' #' . $order->get_order_number() . ' :: '. $event->details->post_title, // JD FIX
 			'expiration_days'        => 0,
 			'client_assume_costs'    => false,
 			'payment_method_enabled' => $this->payment_method_enabled,

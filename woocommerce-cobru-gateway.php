@@ -6,7 +6,7 @@
  * Author: COBRU.CO
  * Author URI: https://github.com/0kCobru/woocommerce
  * Text Domain: cobru
- * Version: 1.2.1
+ * Version: 1.2.2
  * 
  */
 

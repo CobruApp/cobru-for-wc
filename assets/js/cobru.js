@@ -1,35 +1,44 @@
-function cobru_submit_error(error_message) {
-    jQuery('.woocommerce-NoticeGroup-checkout, .woocommerce-error, .woocommerce-message').remove();
-
-    let checkout_form = jQuery('form.checkout');
-    checkout_form.prepend('<div class="woocommerce-NoticeGroup woocommerce-NoticeGroup-checkout">' + error_message + '</div>');
-    checkout_form.removeClass('processing').unblock();
-    checkout_form.find('.input-text, select, input:checkbox').trigger('validate').blur();
-
-    if (typeof checkout_form.scroll_to_notices === "function") {
-        checkout_form.scroll_to_notices();
-    } else {
-        $.scroll_to_notices();
-    }
-
-    jQuery(document.body).trigger('checkout_error');
-}
-
-function cobru_is_valid_json(raw_json) {
-    try {
-        var json = jQuery.parseJSON(raw_json);
-
-        return (json && 'object' === typeof json);
-    } catch (e) {
-        return false;
-    }
-}
-
-
 jQuery(function ($) {
+    function cobru_submit_error(error_message, $) {
+        console.log('cobru_submit_error:');
+        console.log(error_message);
+        jQuery('.woocommerce-NoticeGroup-checkout, .woocommerce-error, .woocommerce-message').remove();
+
+        let checkout_form = jQuery('form.checkout');
+        checkout_form.prepend('<div class="woocommerce-NoticeGroup woocommerce-NoticeGroup-checkout">' + error_message + '</div>');
+        checkout_form.removeClass('processing').unblock();
+        checkout_form.find('.input-text, select, input:checkbox').trigger('validate').blur();
+
+        if (typeof checkout_form.scroll_to_notices === "function") {
+            checkout_form.scroll_to_notices();
+        } else {
+            if (typeof $.scroll_to_notices === "function") {
+                $.scroll_to_notices();
+            }
+        }
+
+        jQuery(document.body).trigger('checkout_error');
+    }
+
+    function cobru_is_valid_json(raw_json) {
+        console.log("raw_json: " + raw_json);
+        try {
+            var json = jQuery.parseJSON(raw_json);
+
+            return (json && 'object' === typeof json);
+        } catch (e) {
+            return false;
+        }
+    }
+
+
     let checkout_form = $('form.checkout');
 
     checkout_form.on('checkout_place_order_cobru', function () {
+
+        let data_serialized = $(this).serialize();
+        console.log(data_serialized);
+
         $(this).addClass('processing');
 
         var form_data = $(this).data();
@@ -77,7 +86,7 @@ jQuery(function ($) {
         $.ajax({
             type: 'POST',
             url: wc_checkout_params.checkout_url,
-            data: $(this).serialize(),
+            data: data_serialized,
             dataType: 'json',
             success: function (result) {
                 try {
@@ -111,14 +120,17 @@ jQuery(function ($) {
 
                     // Add new errors
                     if (result.messages) {
-                        cobru_submit_error(result.messages);
+                        cobru_submit_error(result.messages, $);
                     } else {
-                        cobru_submit_error('<div class="woocommerce-error">' + wc_checkout_params.i18n_checkout_error + '</div>');
+                        cobru_submit_error('<div class="woocommerce-error from-success">' + wc_checkout_params.i18n_checkout_error + '</div>', $);
                     }
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                cobru_submit_error('<div class="woocommerce-error">' + errorThrown + '</div>');
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown);
+                cobru_submit_error('<div class="woocommerce-error from-error">' + errorThrown + '</div>', $);
             }
         });
 

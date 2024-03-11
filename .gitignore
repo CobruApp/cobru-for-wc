@@ -6,6 +6,7 @@ wp-content/backups-dup-lite/
 wp-content/et-cache/
 wp-content/uploads/sessions/
 wp-content/uploads/wc-logs/
+to-ignore/
 
 # General
 __MACOSX
