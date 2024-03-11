@@ -20,7 +20,7 @@ function cobru_load_class()
 		public function __construct()
 		{
 			$this->id                 = 'cobru';
-			$this->icon               = WP_PLUGIN_URL . '/woocommerce-gateway-cobru/assets/img/cobru-logo.png';
+			$this->icon               = COBRU_PLUGIN_URL . '/assets/img/cobru-logo.png'; // JD FIX
 			$this->has_fields         = false;
 			$this->method_title       = 'Cobru';
 			$this->method_description = __('Accept multiple payments in seconds.', 'cobru');
@@ -182,6 +182,7 @@ function cobru_load_class()
 					),
 					'default'           => 'yes'
 				],
+				// JD START
 				'daviplata'           => [
 					'label'       => __('Daviplata', 'cobru'),
 					'id'          => "daviplata",
@@ -193,6 +194,7 @@ function cobru_load_class()
 					),
 					'default'           => 'yes'
 				],
+				// JS END
 				'credit_card'              => [
 
 					'label'       => __('Credit Card', 'cobru'),
@@ -444,12 +446,12 @@ function cobru_load_class()
 					'email' => $order->get_billing_email(),
 					'address' => $order->get_billing_address_1(),
 					'third_party' => 'true',
-					'callback_url' => get_home_url() . '/wp-json/wc/v4/cobru?orderId=' . $order->get_order_number,
+					'callback_url' => get_home_url() . '/wp-json/wc/v4/cobru?orderId=' . $order->get_order_number(),
 					'redirect_url' => $order->get_checkout_order_received_url(),
 
 				];
 
-				printf($base_url . $order->get_meta(self::META_URL) . '?' . http_build_query($params));
+				// printf($base_url . $order->get_meta(self::META_URL) . '?' . http_build_query($params));
 				return $base_url . $order->get_meta(self::META_URL) . '?' . http_build_query($params);
 			} else {
 				return null;
@@ -466,8 +468,6 @@ function cobru_load_class()
 		private function get_callback_url($order_id)
 		{
 			$url = get_home_url() . '/wp-json/wc/v4/cobru?orderId=' . $order_id;
-			//$url = 'https://autorepeatorders.com.ngrok.io/wp-json/wc/v4/cobru?orderId=' . $order_id;
-
 			return $url;
 		}
 
