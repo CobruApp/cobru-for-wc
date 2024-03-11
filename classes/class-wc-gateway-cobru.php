@@ -11,6 +11,7 @@ function cobru_load_class()
 		const META_URL = '_cobru_url';
 		const META_PK = '_cobru_pk';
 		const DEFAULT_STATUS = 'canceled'; // ocastellar 10/08/2021
+		const VERSION = '1.2.4';
 
 		public $client;
 
@@ -22,8 +23,8 @@ function cobru_load_class()
 			$this->id                 = 'cobru';
 			$this->icon               = COBRU_PLUGIN_URL . '/assets/img/cobru-logo.png'; // JD FIX
 			$this->has_fields         = false;
-			$this->method_title       = 'Cobru';
-			$this->method_description = __('Accept multiple payments in seconds.', 'cobru');
+			$this->method_title       = 'Cobru for WC';
+			$this->method_description = __('Accept multiple payments in seconds.', 'cobru-for-wc');
 
 			$this->supports = [
 				'products'
@@ -106,237 +107,237 @@ function cobru_load_class()
 			// ocastellar 04/09/2020 agregamos en campo refresh token en la estructura de wordpress
 			$this->form_fields = [
 				'enabled'              => [
-					'title'       => __('Enable/Disable', 'cobru'),
-					'label'       => __('Enable Cobru Gateway', 'cobru'),
+					'title'       => __('Enable/Disable', 'cobru-for-wc'),
+					'label'       => __('Enable Cobru Gateway', 'cobru-for-wc'),
 					'type'        => 'checkbox',
 					'description' => '',
 					'default'     => 'no'
 				],
 				'title'                => [
-					'title'       => __('Title', 'cobru'),
+					'title'       => __('Title', 'cobru-for-wc'),
 					'type'        => 'text',
-					'description' => __('This controls the title which the user sees during checkout.', 'cobru'),
-					'default'     => __('Pay with any currency', 'cobru'),
+					'description' => __('This controls the title which the user sees during checkout.', 'cobru-for-wc'),
+					'default'     => __('Pay with any currency', 'cobru-for-wc'),
 					'desc_tip'    => true,
 				],
 				'description'          => [
-					'title'       => __('Description', 'cobru'),
+					'title'       => __('Description', 'cobru-for-wc'),
 					'type'        => 'textarea',
 					'description' => __(
 						'This controls the description which the user sees during checkout.',
 						'cobru'
 					),
-					'default'     => __('Pay with any currency with Cobru.', 'cobru'),
+					'default'     => __('Pay with any currency with Cobru.', 'cobru-for-wc'),
 				],
 				'testmode'             => [
-					'title'       => __('Test mode', 'cobru'),
-					'label'       => __('Enable Test Mode', 'cobru'),
+					'title'       => __('Test mode', 'cobru-for-wc'),
+					'label'       => __('Enable Test Mode', 'cobru-for-wc'),
 					'type'        => 'checkbox',
-					'description' => __('Place the payment gateway in test mode using test API keys.', 'cobru'),
+					'description' => __('Place the payment gateway in test mode using test API keys.', 'cobru-for-wc'),
 					'default'     => 'yes',
 					'desc_tip'    => true,
 				],
 				'test_refresh_token' => [
-					'title' => __('Test Refresh Token', 'cobru'),
+					'title' => __('Test Refresh Token', 'cobru-for-wc'),
 					'type'  => 'text'
 				],
 				'test_publishable_key' => [
-					'title' => __('Test Token', 'cobru'),
+					'title' => __('Test Token', 'cobru-for-wc'),
 					'type'  => 'text'
 				],
 				'test_private_key'     => [
-					'title' => __('Test X-API-KEY', 'cobru'),
+					'title' => __('Test X-API-KEY', 'cobru-for-wc'),
 					'type'  => 'password',
 				],
 				'refresh_token'      => [
-					'title' => __('Live Refresh Token', 'cobru'),
+					'title' => __('Live Refresh Token', 'cobru-for-wc'),
 					'type'  => 'text'
 				],
 				'publishable_key'      => [
-					'title' => __('Live Token', 'cobru'),
+					'title' => __('Live Token', 'cobru-for-wc'),
 					'type'  => 'text'
 				],
 				'private_key'          => [
-					'title' => __('Live X-API-KEY', 'cobru'),
+					'title' => __('Live X-API-KEY', 'cobru-for-wc'),
 					'type'  => 'password'
 				],
 				'NEQUI'           => [
-					'label'       => __('NEQUI', 'cobru'),
+					'label'       => __('NEQUI', 'cobru-for-wc'),
 					'id'          => "nequi",
 					'type'        => 'checkbox',
 					'class'       => 'online_payment_method',
 					'description' => '',
 					'custom_attributes' => array(
-						'data-translate' => __('Select payment methods', 'cobru'),
+						'data-translate' => __('Select payment methods', 'cobru-for-wc'),
 					),
 					'default'           => 'yes'
 				],
 				'pse'              => [
-					'label'       => __('PSE', 'cobru'),
-					'id'          => __('woocommerce_cobru_pse', 'cobru'),
+					'label'       => __('PSE', 'cobru-for-wc'),
+					'id'          => __('woocommerce_cobru_pse', 'cobru-for-wc'),
 					'type'        => 'checkbox',
 					'class'       => 'online_payment_method',
 					'description' => '',
 					'custom_attributes' => array(
-						'data-translate' => __('Select payment methods', 'cobru'),
+						'data-translate' => __('Select payment methods', 'cobru-for-wc'),
 					),
 					'default'           => 'yes'
 				],
 				// JD START
 				'daviplata'           => [
-					'label'       => __('Daviplata', 'cobru'),
+					'label'       => __('Daviplata', 'cobru-for-wc'),
 					'id'          => "daviplata",
 					'type'        => 'checkbox',
 					'class'       => 'online_payment_method',
 					'description' => '',
 					'custom_attributes' => array(
-						'data-translate' => __('Select payment methods', 'cobru'),
+						'data-translate' => __('Select payment methods', 'cobru-for-wc'),
 					),
 					'default'           => 'yes'
 				],
 				// JS END
 				'credit_card'              => [
 
-					'label'       => __('Credit Card', 'cobru'),
-					'id'          => __('woocommerce_cobru_credit_card', 'cobru'),
+					'label'       => __('Credit Card', 'cobru-for-wc'),
+					'id'          => __('woocommerce_cobru_credit_card', 'cobru-for-wc'),
 					'type'        => 'checkbox',
 					'class'       => 'online_payment_method',
 					'description' => '',
 					'custom_attributes' => array(
-						'data-translate' => __('Select payment methods', 'cobru'),
+						'data-translate' => __('Select payment methods', 'cobru-for-wc'),
 					),
 					'default'           => 'yes'
 				],
 				'bancolombia_transfer'              => [
 
-					'label'       => __('Botón Bancolombia', 'cobru'),
+					'label'       => __('Botón Bancolombia', 'cobru-for-wc'),
 					'id'          => "bancolombia_transfer",
 					'type'        => 'checkbox',
 					'class'       => 'online_payment_method',
 					'description' => '',
 					'custom_attributes' => array(
-						'data-translate' => __('Select payment methods', 'cobru'),
+						'data-translate' => __('Select payment methods', 'cobru-for-wc'),
 					),
 					'default'           => 'yes'
 				],
 				'bancolombia_qr'              => [
 
-					'label'       => __('Bancolombia QR', 'cobru'),
+					'label'       => __('Bancolombia QR', 'cobru-for-wc'),
 					'id'          => "bancolombia_qr",
 					'type'        => 'checkbox',
 					'class'       => 'online_payment_method',
 					'description' => '',
 					'custom_attributes' => array(
-						'data-translate' => __('Select payment methods', 'cobru'),
+						'data-translate' => __('Select payment methods', 'cobru-for-wc'),
 					),
 					'default'           => 'yes'
 				],
 				'efecty'              => [
 
-					'label'       => __('Efecty', 'cobru'),
-					'id'          => __('woocommerce_cobru_efecty', 'cobru'),
+					'label'       => __('Efecty', 'cobru-for-wc'),
+					'id'          => __('woocommerce_cobru_efecty', 'cobru-for-wc'),
 					'type'        => 'checkbox',
 					'class'       => 'online_payment_method',
 					'description' => '',
 					'custom_attributes' => array(
-						'data-translate' => __('Select payment methods', 'cobru'),
+						'data-translate' => __('Select payment methods', 'cobru-for-wc'),
 					),
 					'default'           => 'yes'
 				],
 				'corresponsal_bancolombia'              => [
 
-					'label'       => __('Corresponsal Bancolombia', 'cobru'),
-					'id'          => __('woocommerce_cobru_corresponsal_bancolombia', 'cobru'),
+					'label'       => __('Corresponsal Bancolombia', 'cobru-for-wc'),
+					'id'          => __('woocommerce_cobru_corresponsal_bancolombia', 'cobru-for-wc'),
 					'type'        => 'checkbox',
 					'class'       => 'online_payment_method',
 					'description' => '',
 					'custom_attributes' => array(
-						'data-translate' => __('Select payment methods', 'cobru'),
+						'data-translate' => __('Select payment methods', 'cobru-for-wc'),
 					),
 					'default'           => 'yes'
 				],
 				'dale'            => [
 
-					'label'       => __('DALE!', 'cobru'),
+					'label'       => __('DALE!', 'cobru-for-wc'),
 					'id'          => "dale",
 					'type'        => 'checkbox',
 					'class'       => 'online_payment_method',
 					'description' => '',
 					'custom_attributes' => array(
-						'data-translate' => __('Select payment methods', 'cobru'),
+						'data-translate' => __('Select payment methods', 'cobru-for-wc'),
 					),
 					'default'           => 'yes'
 				],
 				'cobru'              => [
-					'title'       => __('Payment methods', 'cobru'),
+					'title'       => __('Payment methods', 'cobru-for-wc'),
 					'desc_tip' => __('Choose the available payment methods in your store.', 'woocommerce-mercadopago'),
-					'label'       => __('Cobru', 'cobru'),
-					'id'          => __('woocommerce_cobru_cobru', 'cobru'),
+					'label'       => __('Cobru', 'cobru-for-wc'),
+					'id'          => __('woocommerce_cobru_cobru', 'cobru-for-wc'),
 					'type'        => 'checkbox',
 					'class'       => 'online_payment_method',
 					'description' => '',
 					'custom_attributes' => array(
-						'data-translate' => __('Select payment methods', 'cobru'),
+						'data-translate' => __('Select payment methods', 'cobru-for-wc'),
 					),
 					'default'           => 'yes'
 				],
 				'BTC'              => [
 
-					'label'       => __('BTC', 'cobru'),
-					'id'          => __('woocommerce_cobru_BTC', 'cobru'),
+					'label'       => __('BTC', 'cobru-for-wc'),
+					'id'          => __('woocommerce_cobru_BTC', 'cobru-for-wc'),
 					'type'        => 'checkbox',
 					'class'       => 'online_payment_method',
 					'description' => '',
 					'custom_attributes' => array(
-						'data-translate' => __('Select payment methods', 'cobru'),
+						'data-translate' => __('Select payment methods', 'cobru-for-wc'),
 					),
 					'default'           => 'yes'
 				],
 				'BCH'              => [
 
-					'label'       => __('BCH', 'cobru'),
-					'id'          => __('woocommerce_cobru_BCH', 'cobru'),
+					'label'       => __('BCH', 'cobru-for-wc'),
+					'id'          => __('woocommerce_cobru_BCH', 'cobru-for-wc'),
 					'type'        => 'checkbox',
 					'class'       => 'online_payment_method',
 					'description' => '',
 					'custom_attributes' => array(
-						'data-translate' => __('Select payment methods', 'cobru'),
+						'data-translate' => __('Select payment methods', 'cobru-for-wc'),
 					),
 					'default'           => 'yes'
 				],
 				'DASH'              => [
 
-					'label'       => __('DASH', 'cobru'),
-					'id'          => __('woocommerce_cobru_DASH', 'cobru'),
+					'label'       => __('DASH', 'cobru-for-wc'),
+					'id'          => __('woocommerce_cobru_DASH', 'cobru-for-wc'),
 					'type'        => 'checkbox',
 					'class'       => 'online_payment_method',
 					'description' => '',
 					'custom_attributes' => array(
-						'data-translate' => __('Select payment methods', 'cobru'),
+						'data-translate' => __('Select payment methods', 'cobru-for-wc'),
 					),
 					'default'           => 'yes'
 				],
 				// 'baloto'              => [
 
-				// 	'label'       => __('Baloto', 'cobru'),
-				// 	'id'          => __('woocommerce_cobru_baloto', 'cobru'),
+				// 	'label'       => __('Baloto', 'cobru-for-wc'),
+				// 	'id'          => __('woocommerce_cobru_baloto', 'cobru-for-wc'),
 				// 	'type'        => 'checkbox',
 				// 	'class'       => 'online_payment_method',
 				// 	'description' => '',
 				// 	'custom_attributes' => array(
-				// 		'data-translate' => __('Select payment methods', 'cobru'),
+				// 		'data-translate' => __('Select payment methods', 'cobru-for-wc'),
 				// 	),
 				// 	'default'           => 'yes'
 				// ],
 
 				'status_to_set'        => [
-					'title'   => __('Status to set after payment', 'cobru'),
+					'title'   => __('Status to set after payment', 'cobru-for-wc'),
 					'type'    => 'select',
 					'default' => self::DEFAULT_STATUS,
 					'options' => [
-						'canceled'  => __('Canceled', 'cobru'),
-						'processing' => __('Processing', 'cobru'),
-						'completed'  => __('Completed', 'cobru'),
+						'canceled'  => __('Canceled', 'cobru-for-wc'),
+						'processing' => __('Processing', 'cobru-for-wc'),
+						'completed'  => __('Completed', 'cobru-for-wc'),
 					]
 				]
 			];
@@ -352,6 +353,7 @@ function cobru_load_class()
 		 */
 		public function enqueue_scripts()
 		{
+			// phpcs:ignore
 			if (!is_cart() && !is_checkout() && !isset($_GET['pay_for_order'])) {
 				return;
 			}
@@ -368,14 +370,20 @@ function cobru_load_class()
 				return;
 			}
 
-			wp_register_script('cobru', COBRU_PLUGIN_URL . '/assets/js/cobru.js', ['jquery']);
-			wp_localize_script('cobru', 'auth', [
+			wp_register_script(
+				'cobru-for-wc',
+				COBRU_PLUGIN_URL . '/assets/js/cobru.js',
+				['jquery'],
+				$this::VERSION,
+				['in_footer' => true]
+			);
+			wp_localize_script('cobru-for-wc', 'auth', [
 				'bearer' => $this->client->get_bearer(),
 				'secret' => $this->private_key,
 				'token'  => $this->publishable_key,
 			]);
 
-			wp_enqueue_script('cobru');
+			wp_enqueue_script('cobru-for-wc');
 		}
 
 		/*

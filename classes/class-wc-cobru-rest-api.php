@@ -55,14 +55,14 @@ class WC_Cobru_Rest_Api extends WP_REST_Controller
 					 // $order_status   = $order_status;
                 } catch (Throwable $e) {
                     $order_status = WC_Gateway_Cobru::DEFAULT_STATUS;
-					$note   = __('Pago cancelado', 'cobru');
+					$note   = __('Pago cancelado', 'cobru-for-wc');
                 }
 
-                $note   = __('Pago aprobado', 'cobru');
+                $note   = __('Pago aprobado', 'cobru-for-wc');
             } else {
                 $order_status = 'failed';
 		        $resultados = print_r($data, true);
-                $note   = __( $resultados, 'cobru');
+                $note   = $resultados;
             }
 
             $order->set_status($order_status);

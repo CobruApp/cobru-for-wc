@@ -1,0 +1,240 @@
+# Copyright (C) 2024 COBRU.CO
+# This file is distributed under the GPLv3.
+msgid ""
+msgstr ""
+"Project-Id-Version: Cobru for WC 1.2.3\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cobru-for-wc\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-03-11T07:14:44+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.10.0\n"
+"X-Domain: cobru-for-wc\n"
+
+#. Plugin Name of the plugin
+#: cobru-for-wc.php
+msgid "Cobru for WC"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: cobru-for-wc.php
+msgid "https://cobru.co/desarrolladores/"
+msgstr ""
+
+#. Description of the plugin
+#: cobru-for-wc.php
+msgid "WooCommerce implementation of Cobru API Gateway"
+msgstr ""
+
+#. Author of the plugin
+#: cobru-for-wc.php
+msgid "COBRU.CO"
+msgstr ""
+
+#. Author URI of the plugin
+#: cobru-for-wc.php
+msgid "https://github.com/0kCobru/woocommerce"
+msgstr ""
+
+#: classes/class-wc-cobru-api.php:136
+msgid "Cobru created"
+msgstr ""
+
+#: classes/class-wc-cobru-rest-api.php:58
+msgid "Pago cancelado"
+msgstr ""
+
+#: classes/class-wc-cobru-rest-api.php:61
+msgid "Pago aprobado"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:26
+msgid "Accept multiple payments in seconds."
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:109
+msgid "Enable/Disable"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:110
+msgid "Enable Cobru Gateway"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:116
+msgid "Title"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:118
+msgid "This controls the title which the user sees during checkout."
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:119
+msgid "Pay with any currency"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:123
+msgid "Description"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:129
+msgid "Pay with any currency with Cobru."
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:132
+msgid "Test mode"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:133
+msgid "Enable Test Mode"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:135
+msgid "Place the payment gateway in test mode using test API keys."
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:140
+msgid "Test Refresh Token"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:144
+msgid "Test Token"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:148
+msgid "Test X-API-KEY"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:152
+msgid "Live Refresh Token"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:156
+msgid "Live Token"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:160
+msgid "Live X-API-KEY"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:164
+msgid "NEQUI"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:170
+#: classes/class-wc-gateway-cobru.php:181
+#: classes/class-wc-gateway-cobru.php:193
+#: classes/class-wc-gateway-cobru.php:206
+#: classes/class-wc-gateway-cobru.php:218
+#: classes/class-wc-gateway-cobru.php:230
+#: classes/class-wc-gateway-cobru.php:242
+#: classes/class-wc-gateway-cobru.php:254
+#: classes/class-wc-gateway-cobru.php:266
+#: classes/class-wc-gateway-cobru.php:279
+#: classes/class-wc-gateway-cobru.php:291
+#: classes/class-wc-gateway-cobru.php:303
+#: classes/class-wc-gateway-cobru.php:315
+msgid "Select payment methods"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:175
+msgid "PSE"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:176
+msgid "woocommerce_cobru_pse"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:187
+msgid "Daviplata"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:200
+msgid "Credit Card"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:201
+msgid "woocommerce_cobru_credit_card"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:212
+msgid "Botón Bancolombia"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:224
+msgid "Bancolombia QR"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:236
+msgid "Efecty"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:237
+msgid "woocommerce_cobru_efecty"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:248
+msgid "Corresponsal Bancolombia"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:249
+msgid "woocommerce_cobru_corresponsal_bancolombia"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:260
+msgid "DALE!"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:271
+msgid "Payment methods"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:273
+msgid "Cobru"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:274
+msgid "woocommerce_cobru_cobru"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:285
+msgid "BTC"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:286
+msgid "woocommerce_cobru_BTC"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:297
+msgid "BCH"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:298
+msgid "woocommerce_cobru_BCH"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:309
+msgid "DASH"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:310
+msgid "woocommerce_cobru_DASH"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:333
+msgid "Status to set after payment"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:337
+msgid "Canceled"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:338
+msgid "Processing"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:339
+msgid "Completed"
+msgstr ""

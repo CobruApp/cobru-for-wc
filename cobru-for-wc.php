@@ -1,12 +1,12 @@
 <?php
 /**
- * Plugin Name: Cobru Gateway for WC
+ * Plugin Name: Cobru for WC
  * Plugin URI: https://cobru.co/desarrolladores/
  * Description: WooCommerce implementation of Cobru API Gateway
  * Author: COBRU.CO
  * Author URI: https://github.com/0kCobru/woocommerce
- * Text Domain: cobru
- * Version: 1.2.3
+ * Text Domain: cobru-for-wc
+ * Version: 1.2.4
  * License: GPLv3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  */
@@ -36,6 +36,6 @@ function cobru_add_gw( $gateways ) {
  */
 function cobru_load_language() {
 	$plugin_rel_path = basename( dirname( __FILE__ ) ) . '/languages';
-	load_plugin_textdomain( 'cobru', false, $plugin_rel_path );
+	load_plugin_textdomain( 'cobru-for-wc', false, $plugin_rel_path );
 }
 add_action('plugins_loaded', 'cobru_load_language');

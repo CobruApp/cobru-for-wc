@@ -54,8 +54,8 @@ class WC_Cobru_Checkout
 
 		echo '<form id="frm-cobru" method="post" enctype="text/plain">';
 		echo '<input type="hidden" name="third_party" value="true" />';
-		echo '<input type="hidden" name="third_party_name" value="' . $siteName . '" />';
-		echo '<input type="hidden" name="callback_url" value="' . $apiUrl . '" />';
+		echo '<input type="hidden" name="third_party_name" value="' . esc_html($siteName) . '" />';
+		echo '<input type="hidden" name="callback_url" value="' . esc_url($apiUrl) . '" />';
 		echo '<input type="hidden" name="payer_redirect_url" value="https://eventu.co" />';
 		echo '<input type="hidden" name="name" value="" />';
 		echo '<input type="hidden" name="email" value="" />';

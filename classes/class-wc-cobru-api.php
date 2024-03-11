@@ -53,14 +53,14 @@ class WC_Cobru_API {
 				$response = wp_remote_post( $this->url( '/token/refresh/' ), [
 					'method'  => 'POST',
 					'headers' => $this->get_header( false ),
-					'body'    => json_encode( [
+					'body'    => wp_json_encode( [
 						'refresh' => $this->refresh_token,
 					] ),
 				] );
 
 				if ( is_wp_error( $response ) ) {
 					$error_message = $response->get_error_message();
-					echo __( "Something went wrong: $error_message", 'cobru' );
+					echo esc_html(__( "Something went wrong: ", 'cobru-for-wc' ) . $error_message);
 
 					return;
 				} else {
@@ -111,7 +111,7 @@ class WC_Cobru_API {
 		$response = wp_remote_post( $this->url( '/cobru/' ), [
 			'method'  => 'POST',
 			'headers' => $this->get_header(),
-			'body'    => json_encode( $args ),
+			'body'    => wp_json_encode( $args ),
 		] );
 
 		if ( is_wp_error( $response ) || isset( $response['response'] ) && $response['response']['code'] != 201 ) {
@@ -133,7 +133,7 @@ class WC_Cobru_API {
 			if ( $data ) {
 				return [
 					'result'     => 'success',
-					'message'    => __( 'Cobru created', 'cobru' ),
+					'message'    => __( 'Cobru created', 'cobru-for-wc' ),
 					'pk'         => $data->pk,
 					'url'        => $data->url,
 					'fee_amount' => $data->fee_amount,
