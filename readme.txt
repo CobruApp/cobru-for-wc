@@ -3,7 +3,7 @@ Contributors: @k1-j0hnd03
 Tags: PSE, Tarjeta de crédito, Efecty, Corresponsal Bancolombia, Botón Bancolombia, Nequi, Daviplata, Rappipay, woocommerce, payments, ecommerce, checkout, cart, subscriptions, debit card, credit card
 Requires at least: 5.4
 Tested up to: 6.4
-Stable tag: 1.2.5
+Stable tag: 1.2.6
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,6 +45,9 @@ Pines de videojuegos, recarga de celulares, seguros
 - Powwi
 
 == Changelog ==
+
+= 1.2.6 =
+* permission_callback fix
 
 = 1.2.5 =
 * Agregados Readme, License y encabezados en archivos PHP
