@@ -19,9 +19,10 @@ class WC_Cobru_Rest_Api extends WP_REST_Controller
 
         register_rest_route($namespace, '/' . $base, [
             [
-                'methods'  => WP_REST_Server::EDITABLE,
-                'callback' => [$this, 'received_callback_data'],
-                'args'     => $this->get_endpoint_args_for_item_schema(false),
+                'methods'               => WP_REST_Server::EDITABLE,
+                'callback'              => [$this, 'received_callback_data'],
+                'args'                   => $this->get_endpoint_args_for_item_schema(false),
+                'permission_callback'    => '__return_true',
             ],
         ]);
     }
