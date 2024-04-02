@@ -21,8 +21,8 @@ class WC_Cobru_Rest_Api extends WP_REST_Controller
             [
                 'methods'               => WP_REST_Server::EDITABLE,
                 'callback'              => [$this, 'received_callback_data'],
-                'args'                   => $this->get_endpoint_args_for_item_schema(false),
-                'permission_callback'    => '__return_true',
+                'args'                  => $this->get_endpoint_args_for_item_schema(false),
+                'permission_callback'   => '__return_true',
             ],
         ]);
     }
@@ -54,12 +54,13 @@ class WC_Cobru_Rest_Api extends WP_REST_Controller
                 // $options        = get_option('woocommerce_cobru_settings');
                 // $cobru_settings = unserialize($options); $cobru_settings['status_to_set']
                 $order_status   = 'processing';
-                // mark order completed or processing 
-                if ($data['amount']  <= 500000) {
-                    $order_status   = 'completed';
-                } else {
-                    $order_status   = 'processing';
-                }
+                // mark order completed or processing // mark order completed or processing 
+				if ($data['payment_method'] === "credit_card") {
+    				$order_status = 'on-hold';
+				} else {
+				    $order_status = 'completed';
+
+				}
 
                 // $order_status   = $order_status;
             } catch (Throwable $e) {
