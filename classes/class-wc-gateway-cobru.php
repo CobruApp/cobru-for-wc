@@ -16,9 +16,36 @@ function cobru_load_class()
 		const META_URL = '_cobru_url';
 		const META_PK = '_cobru_pk';
 		const DEFAULT_STATUS = 'canceled'; // ocastellar 10/08/2021
-		const VERSION = '1.2.4';
+		const VERSION = '1.3.0';
+		const MINIMUN_ORDER_AMOUNT = 10000; // 1.3.0 @j0hnd03
 
+		// properties definition
 		public $client;
+		public $status_to_set;
+		public $testmode;
+		public $private_key;
+		public $refresh_token;
+		public $publishable_key;
+
+		public $cobru;
+		public $nequi;
+		public $pse;
+		public $daviplata;
+		public $credit_card;
+		public $bancolombia_transfer;
+		public $bancolombia_qr;
+		public $efecty;
+		public $corresponsal_bancolombia;
+		public $dale;
+		public $BTC;
+		public $BCH;
+		public $DASH;
+		// public $;
+
+		// 1.3.0 @j0hnd03
+		public $cobru_minimun_ammount;
+		public $credit_card_precaution;
+		public $max_safe_ammount;
 
 		/**
 		 * Class constructor
@@ -40,7 +67,10 @@ function cobru_load_class()
 			$this->title           = $this->get_option('title');
 			$this->description     = $this->get_option('description');
 			$this->enabled         = $this->get_option('enabled');
+
 			$this->status_to_set   = $this->get_option('status_to_set');
+			$this->credit_card_precaution   = $this->get_option('credit_card_precaution');
+
 			$this->testmode        = 'yes' === $this->get_option('testmode');
 			$this->private_key     = $this->testmode ? $this->get_option('test_private_key') : $this->get_option('private_key');
 			$this->publishable_key = $this->testmode ? $this->get_option('test_publishable_key') : $this->get_option('publishable_key');
@@ -55,15 +85,16 @@ function cobru_load_class()
 			$this->efecty      = 'yes' === $this->get_option('efecty');
 			$this->corresponsal_bancolombia = 'yes' === $this->get_option('corresponsal_bancolombia');
 			$this->dale        = 'yes' === $this->get_option('dale');
-
 			$this->cobru       = 'yes' === $this->get_option('cobru');
 			// $this->baloto      = 'yes' === $this->get_option('baloto');
-
 			$this->BTC         = 'yes' === $this->get_option('BTC');
 			$this->BCH         = 'yes' === $this->get_option('BCH');
 			$this->DASH        = 'yes' === $this->get_option('DASH');
 
-
+			// 1.3.0 options @j0hnd03
+			$this->cobru_minimun_ammount = $this->get_option('cobru_minimun_ammount') ? $this->get_option('cobru_minimun_ammount') : $this::MINIMUN_ORDER_AMOUNT;
+			$this->credit_card_precaution = 'yes' === $this->get_option('credit_card_precaution');
+			$this->max_safe_ammount = $this->get_option('max_safe_ammount');
 
 			$s  =  '{';
 			$s  .= '"NEQUI": ' . (boolval($this->nequi) ? 'true' : 'false') . ', ';
@@ -134,6 +165,16 @@ function cobru_load_class()
 					),
 					'default'     => __('Pay with any currency with Cobru.', 'cobru-for-wc'),
 				],
+				'cobru_minimun_ammount' => [
+					'title'       => __('Payment minimun amount', 'cobru-for-wc'),
+					'desc_tip'    => __('You will need to ask Cobru for this value.', 'cobru-for-wc'),
+					'default'     => WC_Gateway_Cobru::MINIMUN_ORDER_AMOUNT,
+					'type'        => 'number'
+				],
+				'title-test-mode' => [
+					'title'       => __('Credentials :: Test Mode', 'cobru-for-wc'),
+					'type'        => 'title'
+				],
 				'testmode'             => [
 					'title'       => __('Test mode', 'cobru-for-wc'),
 					'label'       => __('Enable Test Mode', 'cobru-for-wc'),
@@ -154,6 +195,10 @@ function cobru_load_class()
 					'title' => __('Test X-API-KEY', 'cobru-for-wc'),
 					'type'  => 'password',
 				],
+				'title-live-mode'           => [
+					'title'    => __('Credentials :: Live Mode', 'cobru-for-wc'),
+					'type'     => 'title'
+				],
 				'refresh_token'      => [
 					'title' => __('Live Refresh Token', 'cobru-for-wc'),
 					'type'  => 'text'
@@ -165,6 +210,25 @@ function cobru_load_class()
 				'private_key'          => [
 					'title' => __('Live X-API-KEY', 'cobru-for-wc'),
 					'type'  => 'password'
+				],
+				'title-after-paymet'           => [
+					'title'    => __('After payment', 'cobru-for-wc'),
+					'type'     => 'title'
+				],
+				'status_to_set'        => [
+					'title'   => __('Status to set after payment', 'cobru-for-wc'),
+					'type'    => 'select',
+					'default' => self::DEFAULT_STATUS,
+					'options' => [
+						// 'canceled'  => __('Canceled', 'cobru-for-wc'),
+						'processing' => __('Processing', 'cobru-for-wc'),
+						'completed'  => __('Completed', 'cobru-for-wc'),
+					]
+				],
+				'title-payments-methods' => [
+					'title'       => __('Payment methods', 'cobru-for-wc'),
+					'desc_tip'    => __('Choose the available payment methods in your store.', 'cobru-for-wc'),
+					'type'     => 'title'
 				],
 				'NEQUI'           => [
 					'label'       => __('NEQUI', 'cobru-for-wc'),
@@ -273,9 +337,7 @@ function cobru_load_class()
 					),
 					'default'           => 'yes'
 				],
-				'cobru'              => [
-					'title'       => __('Payment methods', 'cobru-for-wc'),
-					'desc_tip' => __('Choose the available payment methods in your store.', 'woocommerce-mercadopago'),
+				'cobru'           => [
 					'label'       => __('Cobru', 'cobru-for-wc'),
 					'id'          => __('woocommerce_cobru_cobru', 'cobru-for-wc'),
 					'type'        => 'checkbox',
@@ -335,16 +397,28 @@ function cobru_load_class()
 				// 	'default'           => 'yes'
 				// ],
 
-				'status_to_set'        => [
-					'title'   => __('Status to set after payment', 'cobru-for-wc'),
-					'type'    => 'select',
-					'default' => self::DEFAULT_STATUS,
-					'options' => [
-						'canceled'  => __('Canceled', 'cobru-for-wc'),
-						'processing' => __('Processing', 'cobru-for-wc'),
-						'completed'  => __('Completed', 'cobru-for-wc'),
-					]
-				]
+
+				// @j0hnd03 FRAUD MEASURES FROM EVENTU TO ALL
+
+				'title-credit_card_precaution'           => [
+					'title'    => __('Credit Card only :: Anti-fraud measures', 'cobru-for-wc'),
+					'type'     => 'title'
+				],
+				'credit_card_precaution' => [
+					'title'       => __('Always on "on-hold"', 'cobru-for-wc'),
+					'label'       => __('Credit Cards needs verification', 'cobru-for-wc'),
+					'desc_tip'    => __('You will need to manually Complete all the Credit Card orders', 'cobru-for-wc'),
+					'type'        => 'checkbox',
+					'description' => '',
+					'default'           => 'no'
+				],
+				'max_safe_ammount' => [
+					'title'        => __('Max safe ammount', 'cobru-for-wc'),
+					'desc_tip'     => __('Leave it empty to disable this', 'cobru-for-wc'),
+					'description'  => __('If the Credit Card payment ammount is greater than this value, the Order will be "on-hold".', 'cobru-for-wc'),
+					'default'      => __('', 'cobru-for-wc'),
+					'type'         => 'number'
+				],
 			];
 		}
 
@@ -452,9 +526,9 @@ function cobru_load_class()
 		{
 			if ($order) {
 				$base_url = $this->testmode ? 'https://dev.cobru.co/' : 'https://cobru.co/c/';
-
 				$params = [
 					'name'  => $order->get_billing_first_name() . ' ' . $order->get_billing_last_name(),
+					'document_number' => get_post_meta($order->get_id(), 'document_number', true), // 
 					'phone' => $order->get_billing_phone(),
 					'email' => $order->get_billing_email(),
 					'address' => $order->get_billing_address_1(),
@@ -503,6 +577,36 @@ function cobru_load_class()
 				'name'        => $order->get_billing_first_name() . ' ' . $order->get_billing_last_name(),
 
 			];
+		}
+	}
+}
+
+/**
+ * @since 1.3.0
+ * @autor @j0hnd03
+ * Thanks to WC Minimum Order Amount for the code guide
+ */
+add_action('woocommerce_before_cart', 'cobru_wc_minimum_value_alerts');
+add_action('woocommerce_review_order_after_submit', 'cobru_wc_minimum_value_alerts', 11);
+function cobru_wc_minimum_value_alerts()
+{
+	// CREDIT CARD MEASURES
+
+	$cobru_settings        = get_option('woocommerce_cobru_settings');
+	$cobru_minimun_ammount = $cobru_settings['cobru_minimun_ammount'];
+
+	if (WC()->cart->total < $cobru_minimun_ammount) {
+		if (is_cart() || is_checkout()) {
+			/* translators: 1. Order total, 2. Minum Ammount. */
+			$msg = __('Tu orden total es de %1$s :: La orden con el metodo de pago Cobru debe ser superior a %2$s.', 'cobru-for-wc');
+			wc_print_notice(
+				sprintf(
+					$msg,
+					wc_price(WC()->cart->total),
+					wc_price($cobru_minimun_ammount)
+				),
+				'error'
+			);
 		}
 	}
 }
