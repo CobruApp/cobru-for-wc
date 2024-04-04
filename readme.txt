@@ -50,7 +50,7 @@ Pines de videojuegos, recarga de celulares, seguros
 * opcion de poner "on-hold" los pagos con tarjeta de credito para verificacion manual
 * capacidad de configurar un monto seguro para las tarjetas de credito, si ese monto se pasa, quedara "on-hold"
 * [WP6.x] Si el campo "document_number" existe en el form del checkout ser enviado a Cobru para aglilzar el pago
-* Se restringe el envio de cobros inferiores a $10.000
+* Se restringe el envio de cobros inferiores a un valor configurable. Por defecto $10.000
 
 = 1.2.6 =
 * permission_callback fix
