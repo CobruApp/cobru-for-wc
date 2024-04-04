@@ -1,7 +1,7 @@
 === Cobru for WC ===
 Contributors: @k1-j0hnd03
 Tags: PSE, Tarjeta de crédito, Efecty, Corresponsal Bancolombia, Botón Bancolombia, Nequi, Daviplata, Rappipay, woocommerce, payments, ecommerce, checkout, cart, subscriptions, debit card, credit card
-Requires at least: 5.4
+Requires at least: 5.8
 Tested up to: 6.4
 Stable tag: 1.2.6
 License: GPLv3 or later
