@@ -3,7 +3,7 @@ Contributors: @k1-j0hnd03
 Tags: PSE, Tarjeta de crédito, Efecty, Corresponsal Bancolombia, Botón Bancolombia, Nequi, Daviplata, Rappipay, woocommerce, payments, ecommerce, checkout, cart, subscriptions, debit card, credit card
 Requires at least: 5.4
 Tested up to: 6.4
-Stable tag: 1.2.6-eventu
+Stable tag: 1.2.6
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,6 +45,12 @@ Pines de videojuegos, recarga de celulares, seguros
 - Powwi
 
 == Changelog ==
+
+= 1.3.0 =
+* opcion de poner "on-hold" los pagos con tarjeta de credito para verificacion manual
+* capacidad de configurar un monto seguro para las tarjetas de credito, si ese monto se pasa, quedara "on-hold"
+* [WP6.x] Si el campo "document_number" existe en el form del checkout ser enviado a Cobru para aglilzar el pago
+* Se restringe el envio de cobros inferiores a $10.000
 
 = 1.2.6 =
 * permission_callback fix

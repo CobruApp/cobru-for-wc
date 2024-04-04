@@ -49,41 +49,58 @@ class WC_Cobru_Rest_Api extends WP_REST_Controller
         // if (is_array($orders) && count($orders)) { NO aplica por que siempre debe venir un id
         //  $order = $orders[0]; ya no es un array
 
-        if (array_key_exists('state', $data) && $data['state'] == 3) {
-            try {
-                // $options        = get_option('woocommerce_cobru_settings');
-                // $cobru_settings = unserialize($options); $cobru_settings['status_to_set']
-                $order_status   = 'processing';
-                // mark order completed or processing // mark order completed or processing 
-				if ($data['payment_method'] === "credit_card") {
-    				$order_status = 'on-hold';
-				} else {
-				    $order_status = 'completed';
 
-				}
+        if (array_key_exists('state', $data)) {
 
-                // $order_status   = $order_status;
-            } catch (Throwable $e) {
-                $order_status = WC_Gateway_Cobru::DEFAULT_STATUS;
-                $note   = __('Pago cancelado', 'cobru-for-wc');
+            $order->add_order_note(print_r($data, true), false);
+
+            if ($data['state'] == 3) {
+
+                // LOAD OPTIONS
+                $cobru_settings  = get_option('woocommerce_cobru_settings');
+
+                // CREDIT CARD MEASURES
+                if ($data['payment_method'] === 'credit_card') { // 1.3.0 @j0hnd03
+                    $credit_card_precaution = $cobru_settings['credit_card_precaution'];
+                    if ($credit_card_precaution == 'yes') {
+                        $order_status = 'on-hold';
+                        $note   = __('Pago aprobado y en espera por ser con Tarjeta de Credito.', 'cobru-for-wc');
+                    } else {
+                        $max_safe_ammount = $cobru_settings['max_safe_ammount'];
+                        if ($data['amount'] <= $max_safe_ammount) {
+                            $order_status   = 'completed';
+                            $note   = __('Pago aprobado, monto seguro.', 'cobru-for-wc');
+                        } else {
+                            $order_status = 'on-hold';
+                            $note   = __('Pago aprobado y en espera por ser superior al monto seguro con Tarjeta de Credito.', 'cobru-for-wc');
+                        }
+                    }
+                } else {
+                    // ALL OTHER PAYMENT METHODS
+                    // GET SPECIFIC OPTIONS
+                    $order_status   = $cobru_settings['status_to_set'];
+                    $note   = __('Pago aprobado.', 'cobru-for-wc');
+                }
+            } else if ($data['state'] == 2) {
+                $order_status = 'processing';
+                $resultados = print_r($data, true);
+                $note   = __('Pago NO aprobado. -- ' . $resultados, 'cobru-for-wc');
+            } else {
+                $order_status = 'failed';
+                $resultados = print_r($data, true);
+                $note   = $resultados;
             }
 
-            $note   = __('Pago aprobado', 'cobru-for-wc');
-        } else {
-            $order_status = 'failed';
-            $resultados = print_r($data, true);
-            $note   = $resultados;
-        }
+            $order->set_status($order_status);
+            $order->save();
+            $order->add_order_note($note, false);
+            // }   no aplica
 
-        $order->set_status($order_status);
-        $order->save();
-        $order->add_order_note($note, false);
-        // }   no aplica
-
-        try {
-            return new WP_REST_Response($data, 200);
-        } catch (Exception $e) {
-            return new WP_Error('cant-create', __('message', 'text-domain'), ['status' => 500]);
+            try {
+                return new WP_REST_Response($data, 200);
+            } catch (Exception $e) {
+                return new WP_Error('cant-create', __('message', 'text-domain'), ['status' => 500]);
+            }
         }
     }
 }
