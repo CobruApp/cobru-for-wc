@@ -1,14 +1,15 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly 
 
 /**
- * WC_Cobru_Checkout
+ * CobruWC_Checkout
  *
  * Class to handle all API interactions.
  *
  * @since 1.0
  */
 
-class WC_Cobru_Checkout
+class CobruWC_Checkout
 {
 	/**
 	 * Class instance, used to control plugin's action from a third party plugin
@@ -30,7 +31,7 @@ class WC_Cobru_Checkout
 	/**
 	 * Access to a class instance
 	 *
-	 * @return WC_Cobru_Checkout
+	 * @return CobruWC_Checkout
 	 */
 	public static function instance()
 	{
@@ -75,4 +76,4 @@ class WC_Cobru_Checkout
 	}
 }
 
-add_action('plugins_loaded', ['WC_Cobru_Checkout', 'init']);
+add_action('plugins_loaded', ['CobruWC_Checkout', 'init']);

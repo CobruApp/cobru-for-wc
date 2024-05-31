@@ -1,13 +1,15 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly 
+
 /**
- * WC_Cobru_API
+ * CobruWC_API
  *
  * Class to handle all API interactions.
  *
  * @since 1.0
  */
 
-class WC_Cobru_API
+class CobruWC_API
 {
 	const BEARER = 'cobru-bearer';
 	const OPTION_REFRESH = 'cobru-refresh';
@@ -110,7 +112,7 @@ class WC_Cobru_API
 		}
 		$args = [
 			'amount'                 => round($order->get_total()),
-			'description'            => __('Order', 'woocommerce') . ' #' . $order->get_order_number() . (($event === false) ? '' : ' :: ' . $event->details->post_title), // TICKERA FIX FOR NON EVENTU SITES
+			'description'            => __('Order', 'cobru-for-wc') . ' #' . $order->get_order_number() . (($event === false) ? '' : ' :: ' . $event->details->post_title), // TICKERA FIX FOR NON EVENTU SITES
 			'expiration_days'        => 0,
 			'client_assume_costs'    => false,
 			'payment_method_enabled' => $this->payment_method_enabled,
@@ -149,6 +151,7 @@ class WC_Cobru_API
 					'message'    => __('Cobru created', 'cobru-for-wc'),
 					'pk'         => $data->pk,
 					'url'        => $data->url,
+					'amount' 	 => $data->amount,
 					'fee_amount' => $data->fee_amount,
 					'iva_amount' => $data->iva_amount,
 				];
@@ -158,6 +161,206 @@ class WC_Cobru_API
 					'message' => $data
 				];
 			}
+		}
+	}
+	/**
+	 * @param WC_Order $order
+	 * @param WC_Gateway_Cobru $gw
+	 * @return array
+	 * @since 1.5
+	 */
+	public function send_payment($order, $gw)
+	{
+		// HTTP timeout hacks
+		add_filter('http_request_timeout', function ($timeout) {
+			return 60;
+		});
+		ini_set("default_socket_timeout", 60);
+
+		$cobru_meta = WC_Gateway_Cobru_Direct::META_URL;
+		$cobru_url = get_post_meta($order->get_id(), $cobru_meta)[0];
+
+		error_log('send_payment() $cobru_url');
+		error_log(var_export($cobru_url, true));
+		// return false;
+
+		if (!empty($cobru_url)) {
+			error_log("send_payment(): $cobru_url");
+			$note = sprintf(
+				"Payment details:\nBIN: %s\nCARD: %s",
+				substr($_POST['cardNumber'], 0, 6),
+				substr($_POST['cardNumber'], -4),
+			);
+
+			$order->add_order_note($note, false);
+
+			$args = [
+				'name'  			=> $order->get_billing_first_name() . ' ' . $order->get_billing_last_name(),
+				'payment' 			=> 'credit_card',
+				'cc'			 	=> get_post_meta($order->get_id(), 'document_number', true), // 
+				'document_type'		=> 'CC',
+				'email' 			=> $order->get_billing_email(),
+				'phone' 			=> $order->get_billing_phone(),
+				'phone_nequi' 		=> '',
+				'address' 			=> $order->get_billing_address_1(),
+				'push'				=> false,
+				'bank'				=> null,
+				'amount'			=> round($order->get_total()),
+				'platform'			=> 'API',
+				'credit_card'		=> $_POST['cardNumber'],
+				'expiration_date'	=> $_POST['billing_expiration_date_month'] . '/' . substr($_POST['billing_expiration_date_year'], -2),
+				'cvv'				=> $_POST['billing_ccvnumber'],
+				'dues'				=> $_POST['billing_carddues'],
+			];
+			$args_to_debug = $args;
+			$args_to_debug['credit_card'] = substr($_POST['cardNumber'], 0, 6) . '******' . substr($_POST['cardNumber'], -4);
+			$args_to_debug['cvv'] = '***';
+
+			error_log('$args');
+			error_log(var_export($args_to_debug, true));
+			error_log('Sending payment to Cobru API...');
+
+			// return;
+
+			$response = wp_remote_post($this->url("{$cobru_url}"), [
+				'method'  => 'POST',
+				'headers' => $this->get_header(),
+				'body'    => wp_json_encode($args),
+			]);
+
+			error_log('$response');
+			error_log(var_export($response, true));
+
+			if (is_wp_error($response) || isset($response['response']) && $response['response']['code'] != 200) {
+				// HTTP ERRORS
+				if (is_wp_error($response)) {
+					$error_message = $response->get_error_message();
+				} else {
+
+					$data          = json_decode($response['body'], TRUE);
+					$error_message = '';
+
+					if ($data !== null) {
+						foreach ($data as $title => $message) {
+							$error_message .= "{$title} : {$message}<br>\n";
+						}
+					} else {
+						$error_message = $response['body'];
+					}
+				}
+
+				return [
+					'result'  => 'error',
+					'message' => $error_message
+				];
+			} else {
+				$data = json_decode($response['body'], true);
+				$data_bug = json_decode($data, true); // WTF !!
+
+				if (!empty($data_bug)) {
+					$data = $data_bug;
+				}
+
+				if ($data) {
+					error_log('200 $data');
+					error_log(var_export($data, true));
+
+					if (is_array($data) && isset($data[1]['fields']['state'])) {
+
+						$fields_to_note = [
+							'owner',
+							'date_created',
+							'date_payed',
+							'description',
+							'amount',
+							'before_amount',
+							'payed_amount',
+							'fee_iva_amount',
+							'fee_amount',
+							'currency_code',
+							'iva_amount',
+							'fee_iva',
+							'amount_exceeded',
+							'tax_amount_reteiva',
+							'tax_amount_reteica',
+							'tax_amount_retefuente',
+							'state',
+							'payment_method',
+							'franchise',
+							'reference_cobru',
+							'payer_country_code',
+							'payer_name',
+							'payer_email',
+							'payer_id_type',
+							'payer_id',
+							'payer_phone',
+							'payer_address',
+							'payer_redirect_url',
+							'payment_order',
+							'client_assume_costs',
+							'confirmation_url',
+							'payment_method_enabled',
+							'expiration_date',
+							'expiration_days',
+						];
+						$payment_data_to_note = [];
+						$payment_data_to_note['gateway'] = $order->get_payment_method();
+						$payment_data_to_note['gateway_title'] = $order->get_payment_method_title();
+
+						foreach ($fields_to_note as $field) {
+							$payment_data_to_note[$field] = $data[1]['fields'][$field];
+						}
+
+						$debug_note   = __('COBRU DATA: ', 'cobru-for-wc') . var_export($payment_data_to_note, true);
+						$order->add_order_note($debug_note, false);
+
+						if ($data[1]['fields']['state'] == 3) {
+
+
+							$note   = __('Payment has been approved, New staus : ', 'cobru-for-wc') . $gw->status_to_set;
+
+							$order->set_status($gw->status_to_set);
+							$order->save();
+							$order->add_order_note($note, false);
+							return [
+								'result' => 'success',
+								'redirect' => $gw->get_return_url($order),
+							];
+						} else {
+							$cubru_states = array(
+								0 => 'Creado',
+								1 => 'En proceso',
+								2 => 'No pagado',
+								3 => 'Pagado',
+								4 => 'Reembolsado',
+								5 => 'Expirado'
+							);
+							$note = sprintf(
+								"Cobru state: %s - %s",
+								$data[1]['fields']['state'],
+								$cubru_states[$data[1]['fields']['state']],
+							);
+							$order->add_order_note($note, false);
+							return [
+								'result'  => 'error',
+								'message' => $note
+							];
+						}
+					} else {
+						return [
+							'result'  => 'error',
+							'message' => $data['cause']
+						];
+					}
+				} else {
+					return [
+						'result'  => 'error',
+						'message' => $data
+					];
+				}
+			}
+		} else {
+			return false;
 		}
 	}
 }

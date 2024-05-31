@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: Cobru for WC 1.3\n"
+"Project-Id-Version: Cobru for WC 1.5.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cobru-for-wc\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-04-04T10:36:08+00:00\n"
+"POT-Creation-Date: 2024-05-31T07:03:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: cobru-for-wc\n"
@@ -39,271 +39,389 @@ msgstr ""
 msgid "https://github.com/CobruApp/cobru-for-wc"
 msgstr ""
 
-#: classes/class-wc-cobru-api.php:72
+#: classes/class-wc-cobru-api.php:74
 msgid "Something went wrong: "
 msgstr ""
 
-#: classes/class-wc-cobru-api.php:149
+#: classes/class-wc-cobru-api.php:115
+msgid "Order"
+msgstr ""
+
+#: classes/class-wc-cobru-api.php:151
 msgid "Cobru created"
 msgstr ""
 
-#: classes/class-wc-cobru-rest-api.php:67
-msgid "Pago aprobado y en espera por ser con Tarjeta de Credito."
+#: classes/class-wc-cobru-api.php:314
+msgid "COBRU DATA: "
 msgstr ""
 
-#: classes/class-wc-cobru-rest-api.php:72
-msgid "Pago aprobado, monto seguro."
+#: classes/class-wc-cobru-api.php:320
+msgid "Payment has been approved, New staus : "
 msgstr ""
 
-#: classes/class-wc-cobru-rest-api.php:75
-msgid "Pago aprobado y en espera por ser superior al monto seguro con Tarjeta de Credito."
+#: classes/class-wc-cobru-rest-api.php:85
+#: classes/class-wc-cobru-rest-api.php:93
+msgid "Payment approved and pending because it is with a Credit Card."
 msgstr ""
 
-#: classes/class-wc-cobru-rest-api.php:82
-msgid "Pago aprobado."
+#: classes/class-wc-cobru-rest-api.php:90
+msgid "Payment has been approved, secure amount."
 msgstr ""
 
-#: classes/class-wc-cobru-rest-api.php:87
-msgid "Pago NO aprobado. -- "
+#: classes/class-wc-cobru-rest-api.php:100
+msgid "Payment approved."
+msgstr ""
+
+#: classes/class-wc-cobru-rest-api.php:105
+msgid "Payment NOT approved. -- %s"
+msgstr ""
+
+#: classes/class-wc-cobru-rest-api.php:121
+msgid "message"
+msgstr ""
+
+#: classes/class-wc-cobru-rest-api.php:129
+msgid "The API Call Back has been reached, skiping process here to allow direct gateway do its job."
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:46
+msgid "Accept credit cards payments in seconds."
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:98
+#: classes/class-wc-gateway-cobru.php:159
+msgid "Enable/Disable"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:99
+msgid "Enable Cobru Direct Gateway"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:105
+#: classes/class-wc-gateway-cobru.php:166
+msgid "Title"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:107
+#: classes/class-wc-gateway-cobru.php:168
+msgid "This controls the title which the user sees during checkout."
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:108
+#: classes/class-wc-gateway-cobru.php:169
+msgid "Pay with any currency"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:112
+#: classes/class-wc-gateway-cobru.php:173
+msgid "Description"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:118
+#: classes/class-wc-gateway-cobru.php:179
+msgid "Pay with any currency with Cobru."
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:121
+#: classes/class-wc-gateway-cobru.php:182
+msgid "Payment minimun amount"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:122
+#: classes/class-wc-gateway-cobru.php:183
+msgid "You will need to ask Cobru for this value."
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:127
+#: classes/class-wc-gateway-cobru.php:188
+msgid "Credentials :: Test Mode"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:131
+#: classes/class-wc-gateway-cobru.php:192
+msgid "Test mode"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:132
+#: classes/class-wc-gateway-cobru.php:193
+msgid "Enable Test Mode"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:134
+#: classes/class-wc-gateway-cobru.php:195
+msgid "Place the payment gateway in test mode using test API keys."
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:139
+#: classes/class-wc-gateway-cobru.php:200
+msgid "Test Refresh Token"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:143
+#: classes/class-wc-gateway-cobru.php:204
+msgid "Test Token"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:147
+#: classes/class-wc-gateway-cobru.php:208
+msgid "Test X-API-KEY"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:151
+#: classes/class-wc-gateway-cobru.php:212
+msgid "Credentials :: Live Mode"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:155
+#: classes/class-wc-gateway-cobru.php:216
+msgid "Live Refresh Token"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:159
+#: classes/class-wc-gateway-cobru.php:220
+msgid "Live Token"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:163
+#: classes/class-wc-gateway-cobru.php:224
+msgid "Live X-API-KEY"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:167
+#: classes/class-wc-gateway-cobru.php:228
+msgid "After payment"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:171
+#: classes/class-wc-gateway-cobru.php:232
+msgid "Status to set after payment"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:177
+msgid "On Hold"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:178
+#: classes/class-wc-gateway-cobru.php:238
+msgid "Completed"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:245
+#: classes/class-wc-direct-gateway-cobru.php:248
+msgid "Card Number"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:252
+msgid "Dues"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:262
+msgid "Expiration Date"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:292
+#: classes/class-wc-direct-gateway-cobru.php:296
+msgid "Card Verification Number (CVV)"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:293
+msgid "CVV"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:334
+msgid "Credit card number you entered is invalid."
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:340
+msgid "Card expiration date is not valid."
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:343
+msgid "Card verification number (CVV) is not valid. You can find this number on your credit card."
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:392
+msgid "User first payment attemp"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:395
+msgid "Cobru couldn't be created : "
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:404
+msgid "User retrying payment"
+msgstr ""
+
+#: classes/class-wc-direct-gateway-cobru.php:412
+#: classes/class-wc-direct-gateway-cobru.php:413
+msgid "Payment error : "
 msgstr ""
 
 #: classes/class-wc-gateway-cobru.php:59
 msgid "Accept multiple payments in seconds."
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:146
-msgid "Enable/Disable"
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:147
+#: classes/class-wc-gateway-cobru.php:160
 msgid "Enable Cobru Gateway"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:153
-msgid "Title"
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:155
-msgid "This controls the title which the user sees during checkout."
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:156
-msgid "Pay with any currency"
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:160
-msgid "Description"
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:166
-msgid "Pay with any currency with Cobru."
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:169
-msgid "Payment minimun amount"
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:170
-msgid "You will need to ask Cobru for this value."
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:175
-msgid "Credentials :: Test Mode"
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:179
-msgid "Test mode"
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:180
-msgid "Enable Test Mode"
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:182
-msgid "Place the payment gateway in test mode using test API keys."
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:187
-msgid "Test Refresh Token"
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:191
-msgid "Test Token"
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:195
-msgid "Test X-API-KEY"
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:199
-msgid "Credentials :: Live Mode"
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:203
-msgid "Live Refresh Token"
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:207
-msgid "Live Token"
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:211
-msgid "Live X-API-KEY"
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:215
-msgid "After payment"
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:219
-msgid "Status to set after payment"
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:224
+#: classes/class-wc-gateway-cobru.php:237
 msgid "Processing"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:225
-msgid "Completed"
-msgstr ""
-
-#: classes/class-wc-gateway-cobru.php:229
+#: classes/class-wc-gateway-cobru.php:242
 msgid "Payment methods"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:230
+#: classes/class-wc-gateway-cobru.php:243
 msgid "Choose the available payment methods in your store."
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:234
+#: classes/class-wc-gateway-cobru.php:247
 msgid "NEQUI"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:240
-#: classes/class-wc-gateway-cobru.php:251
-#: classes/class-wc-gateway-cobru.php:263
+#: classes/class-wc-gateway-cobru.php:253
+#: classes/class-wc-gateway-cobru.php:264
 #: classes/class-wc-gateway-cobru.php:276
-#: classes/class-wc-gateway-cobru.php:288
-#: classes/class-wc-gateway-cobru.php:300
-#: classes/class-wc-gateway-cobru.php:312
-#: classes/class-wc-gateway-cobru.php:324
-#: classes/class-wc-gateway-cobru.php:336
-#: classes/class-wc-gateway-cobru.php:347
-#: classes/class-wc-gateway-cobru.php:359
-#: classes/class-wc-gateway-cobru.php:371
-#: classes/class-wc-gateway-cobru.php:383
+#: classes/class-wc-gateway-cobru.php:289
+#: classes/class-wc-gateway-cobru.php:301
+#: classes/class-wc-gateway-cobru.php:313
+#: classes/class-wc-gateway-cobru.php:325
+#: classes/class-wc-gateway-cobru.php:337
+#: classes/class-wc-gateway-cobru.php:349
+#: classes/class-wc-gateway-cobru.php:360
+#: classes/class-wc-gateway-cobru.php:372
+#: classes/class-wc-gateway-cobru.php:384
+#: classes/class-wc-gateway-cobru.php:396
 msgid "Select payment methods"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:245
+#: classes/class-wc-gateway-cobru.php:258
 msgid "PSE"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:246
+#: classes/class-wc-gateway-cobru.php:259
 msgid "woocommerce_cobru_pse"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:257
+#: classes/class-wc-gateway-cobru.php:270
 msgid "Daviplata"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:270
+#: classes/class-wc-gateway-cobru.php:283
 msgid "Credit Card"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:271
+#: classes/class-wc-gateway-cobru.php:284
 msgid "woocommerce_cobru_credit_card"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:282
+#: classes/class-wc-gateway-cobru.php:295
 msgid "Botón Bancolombia"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:294
+#: classes/class-wc-gateway-cobru.php:307
 msgid "Bancolombia QR"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:306
+#: classes/class-wc-gateway-cobru.php:319
 msgid "Efecty"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:307
+#: classes/class-wc-gateway-cobru.php:320
 msgid "woocommerce_cobru_efecty"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:318
+#: classes/class-wc-gateway-cobru.php:331
 msgid "Corresponsal Bancolombia"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:319
+#: classes/class-wc-gateway-cobru.php:332
 msgid "woocommerce_cobru_corresponsal_bancolombia"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:330
+#: classes/class-wc-gateway-cobru.php:343
 msgid "DALE!"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:341
+#: classes/class-wc-gateway-cobru.php:354
 msgid "Cobru"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:342
+#: classes/class-wc-gateway-cobru.php:355
 msgid "woocommerce_cobru_cobru"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:353
+#: classes/class-wc-gateway-cobru.php:366
 msgid "BTC"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:354
+#: classes/class-wc-gateway-cobru.php:367
 msgid "woocommerce_cobru_BTC"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:365
+#: classes/class-wc-gateway-cobru.php:378
 msgid "BCH"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:366
+#: classes/class-wc-gateway-cobru.php:379
 msgid "woocommerce_cobru_BCH"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:377
+#: classes/class-wc-gateway-cobru.php:390
 msgid "DASH"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:378
+#: classes/class-wc-gateway-cobru.php:391
 msgid "woocommerce_cobru_DASH"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:404
+#: classes/class-wc-gateway-cobru.php:417
+msgid "Credit Card Gateway Mode"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:421
+msgid "Use Checkout Credit Card Form"
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:422
+msgid "This will enable another payment gateway for WooCommerce."
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:423
+msgid "The Credit Card feature on the main plugin will be disabled."
+msgstr ""
+
+#: classes/class-wc-gateway-cobru.php:431
 msgid "Credit Card only :: Anti-fraud measures"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:408
+#: classes/class-wc-gateway-cobru.php:435
 msgid "Always on \"on-hold\""
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:409
+#: classes/class-wc-gateway-cobru.php:436
 msgid "Credit Cards needs verification"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:410
+#: classes/class-wc-gateway-cobru.php:437
 msgid "You will need to manually Complete all the Credit Card orders"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:416
+#: classes/class-wc-gateway-cobru.php:443
 msgid "Max safe ammount"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:417
+#: classes/class-wc-gateway-cobru.php:444
 msgid "Leave it empty to disable this"
 msgstr ""
 
-#: classes/class-wc-gateway-cobru.php:418
+#: classes/class-wc-gateway-cobru.php:445
 msgid "If the Credit Card payment ammount is greater than this value, the Order will be \"on-hold\"."
 msgstr ""
 
 #. translators: 1. Order total, 2. Minum Ammount.
-#: classes/class-wc-gateway-cobru.php:601
-msgid "Tu orden total es de %1$s :: La orden con el metodo de pago Cobru debe ser superior a %2$s."
+#: classes/class-wc-gateway-cobru.php:627
+msgid "Your order is %1$s :: With Cobru payemnt method must be superior to %2$s."
 msgstr ""
