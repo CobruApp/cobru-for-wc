@@ -48,22 +48,7 @@ class CobruWC_Rest_Api extends WP_REST_Controller
         ]);*/
         $order     = wc_get_order($data['orderId']); // ocastellar 2021/08/23
         $payment_method = $order->get_payment_method();
-        /**
-         * @since 1.5
-         */
-        if (WP_DEBUG) {
-            error_log("\n\n========== received_callback_data() ===============\n\n");
-            error_log("\n\n========== order-id: " . $data['orderId'] . " ===============\n\n");
 
-            error_log('$order->get_payment_method_title');
-            error_log(var_export($order->get_payment_method_title(), true));
-
-            error_log('$order->get_payment_method');
-            error_log(var_export($order->get_payment_method(), true));
-
-            error_log('$data');
-            error_log(var_export($data, true));
-        }
         // if (is_array($orders) && count($orders)) { NO aplica por que siempre debe venir un id
         //  $order = $orders[0]; ya no es un array
 

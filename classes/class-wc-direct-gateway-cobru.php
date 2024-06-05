@@ -1,5 +1,5 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly 
+if (!defined('ABSPATH')) exit; // Exit if accessed directly 
 
 /**
  * WC_Gateway_Cobru_Direct
@@ -9,15 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @since 1.5
  */
 
-// error_log('cobru_direct_load_class()');
-class WC_Gateway_Cobru_Direct extends WC_Payment_Gateway
+class WC_Gateway_Cobru_Direct extends WC_Gateway_Cobru // extends WC_Payment_Gateway
 {
-	const META_URL = '_cobru_url';
-	const META_PK = '_cobru_pk';
-	const DEFAULT_STATUS = 'canceled'; // ocastellar 10/08/2021
-	const VERSION = '1.5.0';
-	const MINIMUN_ORDER_AMOUNT = 10000; // 1.3.0 @j0hnd03
-
 	// properties definition
 	public $cobru_client;
 	public $status_to_set;
@@ -33,6 +26,14 @@ class WC_Gateway_Cobru_Direct extends WC_Payment_Gateway
 	public $cobru_minimun_ammount;
 	public $credit_card_precaution;
 	public $max_safe_ammount;
+
+	// 1.5.2 @j0hnd03
+	public $credit_card_number = null;
+	public $credit_card_number_bin = null;
+	public $credit_card_number_last_4 = null;
+	public $credit_card_expiration_date = null;
+	public $credit_card_cvv = null;
+	public $credit_card_dues = null;
 
 	/**
 	 * Class constructor
@@ -192,37 +193,7 @@ class WC_Gateway_Cobru_Direct extends WC_Payment_Gateway
 		 */
 	public function enqueue_scripts()
 	{
-		// phpcs:ignore
-		if (!is_cart() && !is_checkout() && !isset($_GET['pay_for_order'])) {
-			return;
-		}
-
-		if ('no' === $this->enabled) {
-			return;
-		}
-
-		if (empty($this->private_key) || empty($this->publishable_key) || empty($this->refresh_token)) {
-			return;
-		}
-
-		if (!$this->testmode && !is_ssl()) {
-			return;
-		}
-
-		wp_register_script(
-			'cobru-for-wc',
-			COBRU_PLUGIN_URL . '/assets/js/cobru.js',
-			['jquery'],
-			COBRU_PLUGIN_VER,
-			['in_footer' => true]
-		);
-		wp_localize_script('cobru-for-wc', 'auth', [
-			'bearer' => $this->cobru_client->get_bearer(),
-			'secret' => $this->private_key,
-			'token'  => $this->publishable_key,
-		]);
-
-		wp_enqueue_script('cobru-for-wc');
+		parent::enqueue_scripts();
 	}
 
 	/*
@@ -237,19 +208,19 @@ class WC_Gateway_Cobru_Direct extends WC_Payment_Gateway
 			return;
 		}
 
-		$cardNumber		 = isset($_REQUEST['cardNumber']) ? esc_attr($_REQUEST['cardNumber']) : '';
+		$cardNumber = isset($_REQUEST['cardNumber']) ? esc_html(sanitize_text_field($_REQUEST['cardNumber'])) : '';
 ?>
-
+		<!-- COBRU FOR WC START -->
 		<p class="form-row validate-required">
 			<?php
 			$card_number_field_placeholder	 = __('Card Number', 'cobru-for-wc');
 			$card_number_field_placeholder	 = apply_filters('cobru_card_number_field_placeholder', $card_number_field_placeholder);
 			?>
-			<label><?php _e('Card Number', 'cobru-for-wc'); ?> <span class="required">*</span></label>
-			<input class="input-text" type="text" size="21" maxlength="19" name="cardNumber" value="<?php echo $cardNumber; ?>" placeholder="<?php echo $card_number_field_placeholder; ?>" style="width:auto !important;" />
+			<label><?php esc_html_e('Card Number', 'cobru-for-wc'); ?> <span class="required">*</span></label>
+			<input class="input-text" type="text" size="21" maxlength="19" name="cardNumber" value="<?php echo esc_html($cardNumber); ?>" placeholder="<?php echo esc_html($card_number_field_placeholder); ?>" style="width:auto !important;" />
 		</p>
 		<p class="form-row form-row-first">
-			<label><?php _e('Dues', 'cobru-for-wc'); ?> <span class="required">*</span></label>
+			<label><?php esc_html_e('Dues', 'cobru-for-wc'); ?> <span class="required">*</span></label>
 			<select name="billing_carddues">
 				<option value="1" selected="selected">1</option>
 				<?php for ($o = 2; $o <= 36; $o++) : ?>
@@ -259,7 +230,7 @@ class WC_Gateway_Cobru_Direct extends WC_Payment_Gateway
 		</p>
 		<div class="clear"></div>
 		<p class="form-row form-row-first">
-			<label><?php _e('Expiration Date', 'cobru-for-wc'); ?> <span class="required">*</span></label>
+			<label><?php esc_html_e('Expiration Date', 'cobru-for-wc'); ?> <span class="required">*</span></label>
 			<select name="billing_expiration_date_month">
 				<option value='01'>01</option>
 				<option value='02'>02</option>
@@ -289,21 +260,23 @@ class WC_Gateway_Cobru_Direct extends WC_Payment_Gateway
 		<div class="clear"></div>
 		<p class="form-row form-row-first validate-required">
 			<?php
-			$cvv_field_placeholder	 = __('Card Verification Number (CVV)', 'cobru-for-wc');
-			$cvv_field_placeholder_short	 = __('CVV', 'cobru-for-wc');
-			$cvv_field_placeholder	 = apply_filters('cobru_cvv_field_placeholder', $cvv_field_placeholder);
+			$cvv_field_label	 			= __('Card Verification Number (CVV)', 'cobru-for-wc');
+			$cvv_field_label	 			= apply_filters('cobru_cvv_field_label', $cvv_field_label);
+			$cvv_field_placeholder_short	= __('CVV', 'cobru-for-wc');
 			?>
-			<label><?php _e('Card Verification Number (CVV)', 'cobru-for-wc'); ?> <span class="required">*</span></label>
-			<input class="input-text" type="text" size="4" maxlength="4" name="billing_ccvnumber" value="" placeholder="<?php echo $cvv_field_placeholder_short; ?>" style="width:auto !important;" />
+			<label><?php echo esc_html($cvv_field_label) ?> <span class="required">*</span></label>
+			<input class="input-text" type="text" size="4" maxlength="4" name="billing_ccvnumber" value="" placeholder="<?php echo esc_html($cvv_field_placeholder_short) ?>" style="width:auto !important;" />
 		</p>
-		<!-- <?php
-				$cvv_hint_img	 = COBRU_ASSETS_URL . '/img/cc-cvv.png';
-				$cvv_hint_img	 = apply_filters('cobru_cvv_image_hint_src', $cvv_hint_img);
-				echo '<div class="cobru-security-code-hint-section">';
-				echo '<img src="' . $cvv_hint_img . '" />';
-				echo '</div>';
-				?>
-		<div class="clear"></div> -->
+		<?php
+		$cvv_hint_img	 = COBRU_ASSETS_URL . '/img/cc-cvv.png';
+		$cvv_hint_img	 = apply_filters('cobru_cvv_image_hint_src', $cvv_hint_img);
+		?>
+		<!-- 
+		<div class="cobru-security-code-hint-section">
+			<img src="<?php echo esc_html($cvv_hint_img) ?>" />
+		<div>
+		<div class="clear"></div> 
+		-->
 		<?php
 		$cobru_ssl_img	 = COBRU_ASSETS_URL . '/img/cobru-ssl-checkout.png';
 		$cobru_ssl_img	 = apply_filters('cobru_cobru_ssl_src', $cobru_ssl_img);
@@ -315,32 +288,49 @@ class WC_Gateway_Cobru_Direct extends WC_Payment_Gateway
 				right: 10px;
 			}
 		</style>
-		<div id="cobru-ssl-logos-section"><img src="<?php echo $cobru_ssl_img ?>" /></div>
+		<div id="cobru-ssl-logos-section"><img src="<?php echo esc_html($cobru_ssl_img) ?>" /></div>
 		<div class="clear"></div>
-
+		<!-- COBRU FOR WC END -->
 <?php
 	}
 
-	/*
-     * Validates the fields specified in the payment_fields() function.
-     */
+	/**
+	 * Validates the fields specified in the payment_fields() function.
+	 * @since 1.5
+	 */
 
 	public function validate_fields()
 	{
 		global $woocommerce;
 		include 'functions-credit-card.php';
 
-		if (!is_valid_card_number($_POST['cardNumber'])) {
+		$cardNumber = sanitize_text_field($_POST['cardNumber']);
+		$billing_expiration_date_month = sanitize_text_field($_POST['billing_expiration_date_month']);
+		$billing_expiration_date_year = sanitize_text_field($_POST['billing_expiration_date_year']);
+		$billing_ccvnumber = sanitize_text_field($_POST['billing_ccvnumber']);
+		$billing_carddues = sanitize_text_field($_POST['billing_carddues']);
+
+		if (!cobru_is_valid_card_number($cardNumber)) {
 			wc_add_notice(__('Credit card number you entered is invalid.', 'cobru-for-wc'), 'error');
+		} else {
+			$this->credit_card_number = $cardNumber;
+			$this->credit_card_number_bin = substr($cardNumber, 0, 6);
+			$this->credit_card_number_last_4 = substr($cardNumber, -4);
 		}
-		// if (!is_valid_card_type($_POST['billing_cardtype'])) {
-		// 	wc_add_notice(__('Card type is not valid.', 'cobru-for-wc'), 'error');
-		// }
-		if (!is_valid_expiry($_POST['billing_expiration_date_month'], $_POST['billing_expiration_date_year'])) {
+		if (!cobru_is_valid_expiry($billing_expiration_date_month, $billing_expiration_date_year)) {
 			wc_add_notice(__('Card expiration date is not valid.', 'cobru-for-wc'), 'error');
+		} else {
+			$this->credit_card_expiration_date = $billing_expiration_date_month . '/' . substr($billing_expiration_date_year, -2);
 		}
-		if (!is_valid_cvv_number($_POST['billing_ccvnumber'])) {
+		if (!cobru_is_valid_cvv_number($billing_ccvnumber)) {
 			wc_add_notice(__('Card verification number (CVV) is not valid. You can find this number on your credit card.', 'cobru-for-wc'), 'error');
+		} else {
+			$this->credit_card_cvv = $billing_ccvnumber;
+		}
+		if (!is_numeric($billing_carddues)) {
+			$this->credit_card_dues = 1;
+		} else {
+			$this->credit_card_dues = $billing_carddues;
 		}
 	}
 	/**
@@ -351,15 +341,8 @@ class WC_Gateway_Cobru_Direct extends WC_Payment_Gateway
 		$order     = wc_get_order($order_id);
 		$cobru_url = $order->get_meta(self::META_URL);
 
-		error_log("\n\n========== process_payment() ===============\n\n");
-		error_log("\n\n========== order-id: " . $order_id . " ===============\n\n");
-
-
 		if (empty($cobru_url)) {
 			$response = $this->cobru_client->create_cobru($order, true);
-
-			error_log("create_cobru response");
-			error_log(var_export($response, true));
 
 			if ('success' === $response['result']) {
 
@@ -381,10 +364,6 @@ class WC_Gateway_Cobru_Direct extends WC_Payment_Gateway
 				);
 
 				$order->add_order_note($note, false);
-				// if (WP_DEBUG) {
-				error_log('process_payment() $response');
-				error_log(var_export($response, true));
-				// }
 
 				/** 
 				 * API DIRECT JOB FRM HERE
@@ -402,8 +381,6 @@ class WC_Gateway_Cobru_Direct extends WC_Payment_Gateway
 			 * payment retry
 			 */
 			$order->add_order_note(__('User retrying payment', 'cobru-for-wc'), false);
-			error_log('$order->get_total()');
-			error_log(var_export($order->get_total(), true));
 			$payment_response = $this->cobru_client->send_payment($order, $this);
 		}
 		if ($payment_response['result'] == 'success') {
@@ -413,69 +390,5 @@ class WC_Gateway_Cobru_Direct extends WC_Payment_Gateway
 			wc_add_notice(__('Payment error : ', 'cobru-for-wc') . $payment_response['message'], 'error');
 		}
 		return $payment_response;
-	}
-
-	/**
-	 * Builds the cobru's url to redirect so user enters data.
-	 *
-	 * @param WC_Order $order
-	 *
-	 * @return string|null Url to redirect.  https://dev.cobru.co/ https://cobru.co/c/
-	 */
-	public function get_cobru_url($order = null)
-	{
-		if ($order) {
-			$base_url = $this->testmode ? 'https://dev.cobru.co/' : 'https://cobru.co/c/';
-			$params = [
-				'name'  => $order->get_billing_first_name() . ' ' . $order->get_billing_last_name(),
-				'document_number' => get_post_meta($order->get_id(), 'document_number', true), // 
-				'phone' => $order->get_billing_phone(),
-				'email' => $order->get_billing_email(),
-				'address' => $order->get_billing_address_1(),
-				'third_party' => 'true',
-				'callback_url' => get_home_url() . '/wp-json/wc/v4/cobru?orderId=' . $order->get_order_number(),
-				'redirect_url' => $order->get_checkout_order_received_url(),
-
-			];
-
-			// printf($base_url . $order->get_meta(self::META_URL) . '?' . http_build_query($params));
-			return $base_url . $order->get_meta(self::META_URL) . '?' . http_build_query($params);
-		} else {
-			return null;
-		}
-	}
-
-	/**
-	 * Returns cobru's REST API endpoint to process callback.
-	 *
-	 * @param string $order_id WooCommerce order's ID.
-	 *
-	 * @return string Callback URL.
-	 */
-	private function get_callback_url($order_id)
-	{
-		$url = get_home_url() . '/wp-json/wc/v4/cobru?orderId=' . $order_id;
-		return $url;
-	}
-
-	/**
-	 * Builds response data so WooCommerce redirects to Cobru.
-	 *
-	 * @param WC_Order $order Order to be payed with cobru.
-	 *
-	 * @return array Data.
-	 */
-	private function process_payment_response($order)
-	{
-		return [
-			'result'      => 'success',
-			'return'      => $this->get_return_url($order),
-			'cobruUrl'    => $this->get_cobru_url($order),
-			'callbackUrl' => $this->get_callback_url($order->get_id()),
-			'email'       => $order->get_billing_email(),
-			'phone'       => $order->get_billing_phone(),
-			'name'        => $order->get_billing_first_name() . ' ' . $order->get_billing_last_name(),
-
-		];
 	}
 }

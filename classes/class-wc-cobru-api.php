@@ -1,5 +1,5 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly 
+if (!defined('ABSPATH')) exit; // Exit if accessed directly 
 
 /**
  * CobruWC_API
@@ -165,7 +165,7 @@ class CobruWC_API
 	}
 	/**
 	 * @param WC_Order $order
-	 * @param WC_Gateway_Cobru $gw
+	 * @param WC_Gateway_Cobru_Direct $gw
 	 * @return array
 	 * @since 1.5
 	 */
@@ -180,16 +180,11 @@ class CobruWC_API
 		$cobru_meta = WC_Gateway_Cobru_Direct::META_URL;
 		$cobru_url = get_post_meta($order->get_id(), $cobru_meta)[0];
 
-		error_log('send_payment() $cobru_url');
-		error_log(var_export($cobru_url, true));
-		// return false;
-
 		if (!empty($cobru_url)) {
-			error_log("send_payment(): $cobru_url");
 			$note = sprintf(
 				"Payment details:\nBIN: %s\nCARD: %s",
-				substr($_POST['cardNumber'], 0, 6),
-				substr($_POST['cardNumber'], -4),
+				$gw->credit_card_number_bin,
+				$gw->credit_card_number_last_4,
 			);
 
 			$order->add_order_note($note, false);
@@ -207,29 +202,17 @@ class CobruWC_API
 				'bank'				=> null,
 				'amount'			=> round($order->get_total()),
 				'platform'			=> 'API',
-				'credit_card'		=> $_POST['cardNumber'],
-				'expiration_date'	=> $_POST['billing_expiration_date_month'] . '/' . substr($_POST['billing_expiration_date_year'], -2),
-				'cvv'				=> $_POST['billing_ccvnumber'],
-				'dues'				=> $_POST['billing_carddues'],
+				'credit_card'		=> $gw->credit_card_number,
+				'expiration_date'	=> $gw->credit_card_expiration_date,
+				'cvv'				=> $gw->credit_card_cvv,
+				'dues'				=> $gw->credit_card_dues,
 			];
-			$args_to_debug = $args;
-			$args_to_debug['credit_card'] = substr($_POST['cardNumber'], 0, 6) . '******' . substr($_POST['cardNumber'], -4);
-			$args_to_debug['cvv'] = '***';
-
-			error_log('$args');
-			error_log(var_export($args_to_debug, true));
-			error_log('Sending payment to Cobru API...');
-
-			// return;
 
 			$response = wp_remote_post($this->url("{$cobru_url}"), [
 				'method'  => 'POST',
 				'headers' => $this->get_header(),
 				'body'    => wp_json_encode($args),
 			]);
-
-			error_log('$response');
-			error_log(var_export($response, true));
 
 			if (is_wp_error($response) || isset($response['response']) && $response['response']['code'] != 200) {
 				// HTTP ERRORS
@@ -262,9 +245,6 @@ class CobruWC_API
 				}
 
 				if ($data) {
-					error_log('200 $data');
-					error_log(var_export($data, true));
-
 					if (is_array($data) && isset($data[1]['fields']['state'])) {
 
 						$fields_to_note = [

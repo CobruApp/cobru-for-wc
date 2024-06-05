@@ -8,7 +8,7 @@ $cobru_acceptable_cards = array(
     "Amex"
 );
 
-function is_valid_card_number($to_check)
+function cobru_is_valid_card_number($to_check)
 {
     if (!is_numeric($to_check)) {
         return false;
@@ -46,13 +46,13 @@ function is_valid_card_number($to_check)
     return false;
 }
 
-function is_valid_card_type($to_check)
+function cobru_is_valid_card_type($to_check)
 {
     global $cobru_acceptable_cards;
     return $to_check and in_array($to_check, $cobru_acceptable_cards);
 }
 
-function is_valid_expiry($month, $year)
+function cobru_is_valid_expiry($month, $year)
 {
     $now = time();
     $actual_year = (int) date('Y', $now);
@@ -68,13 +68,13 @@ function is_valid_expiry($month, $year)
     return false;
 }
 
-function is_valid_cvv_number($to_check)
+function cobru_is_valid_cvv_number($to_check)
 {
     $length = strlen($to_check);
     return is_numeric($to_check) and $length > 2 and $length < 5;
 }
 
-function get_user_ip()
+function cobru_get_user_ip()
 {
     $user_ip = '';
     if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {

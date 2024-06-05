@@ -14,7 +14,6 @@ class WC_Gateway_Cobru extends WC_Payment_Gateway
 	const META_URL = '_cobru_url';
 	const META_PK = '_cobru_pk';
 	const DEFAULT_STATUS = 'canceled'; // ocastellar 10/08/2021
-	const VERSION = '1.5.0';
 	const MINIMUN_ORDER_AMOUNT = 10000; // 1.3.0 @j0hnd03
 
 	// properties definition
@@ -139,7 +138,6 @@ class WC_Gateway_Cobru extends WC_Payment_Gateway
 		 * COBRU DIRECT LOADER
 		 * @since 1.5
 		 */
-		// error_log(var_export($this->credit_card_direct_gw, true));
 		if ($this->credit_card_direct_gw) {
 			$this->icon = COBRU_PLUGIN_URL . '/assets/img/cobru-for-wc-no-tc.png';
 		} else {
