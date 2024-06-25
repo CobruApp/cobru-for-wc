@@ -114,7 +114,7 @@ class WC_Gateway_Cobru_Direct extends WC_Gateway_Cobru // extends WC_Payment_Gat
 				'type'        => 'textarea',
 				'description' => __(
 					'This controls the description which the user sees during checkout.',
-					'cobru'
+					'cobru-for-wc'
 				),
 				'default'     => __('Pay with any currency with Cobru.', 'cobru-for-wc'),
 			],

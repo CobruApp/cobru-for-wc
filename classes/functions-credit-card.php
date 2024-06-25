@@ -78,9 +78,9 @@ function cobru_get_user_ip()
 {
     $user_ip = '';
     if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        $user_ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        $user_ip = sanitize_text_field($_SERVER['HTTP_X_FORWARDED_FOR']);
     } else {
-        $user_ip = $_SERVER['REMOTE_ADDR'];
+        $user_ip = sanitize_text_field($_SERVER['REMOTE_ADDR']);
     }
 
     if (strstr($user_ip, ',')) {

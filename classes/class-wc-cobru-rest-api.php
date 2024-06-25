@@ -1,5 +1,5 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly 
+if (!defined('ABSPATH')) exit; // Exit if accessed directly 
 
 /**
  * CobruWC_Rest_Api
@@ -51,14 +51,15 @@ class CobruWC_Rest_Api extends WP_REST_Controller
 
         // if (is_array($orders) && count($orders)) { NO aplica por que siempre debe venir un id
         //  $order = $orders[0]; ya no es un array
+        $order->add_order_note(print_r($data, true), false);
 
-        if ($payment_method == 'cobru') {
-            if (array_key_exists('state', $data)) {
 
-                $order->add_order_note(print_r($data, true), false);
+        if (array_key_exists('state', $data)) {
 
-                if ($data['state'] == 3) {
 
+            if ($data['state'] == 3) {
+
+                if ($payment_method == 'cobru') {
                     // LOAD OPTIONS
                     $cobru_settings  = get_option('woocommerce_cobru_settings');
 
@@ -84,35 +85,46 @@ class CobruWC_Rest_Api extends WP_REST_Controller
                         $order_status   = $cobru_settings['status_to_set'];
                         $note   = __('Payment approved.', 'cobru-for-wc');
                     }
-                } else if ($data['state'] == 2) {
-                    $order_status = 'processing';
-                    $resultados = print_r($data, true);
-                    $note_i18   = __('Payment NOT approved. -- %s', 'cobru-for-wc');
-                    $note = sprintf($note_i18, $resultados);
-                } else {
-                    $order_status = 'failed';
-                    $resultados = print_r($data, true);
-                    $note   = $resultados;
                 }
+                /**
+                 * @since 1.5
+                 */
+                else if ($payment_method == 'cobru-direct') {
+                    if (($order->get_status() == 'pending')) {
+                        $cobru_settings  = get_option('woocommerce_cobru-direct_settings');
 
-                $order->set_status($order_status);
-                $order->save();
-                $order->add_order_note($note, false);
-                // }   no aplica
-
-                try {
-                    return new WP_REST_Response($data, 200);
-                } catch (Exception $e) {
-                    return new WP_Error('cant-create', __('message', 'cobru-for-wc'), ['status' => 500]);
+                        $note   = __('Payment approved.', 'cobru-for-wc');
+                        $order_status   = $cobru_settings['status_to_set'];
+                    } else {
+                        $note   = __('The API Call Back has been reached but the CC direct payment has already set a order status.', 'cobru-for-wc');
+                        $order_status = false;
+                    }
                 }
+            } else if ($data['state'] == 1) {
+                $order_status = 'on-hold';
+                $note = __('Payment processing.', 'cobru-for-wc');
+            } else if ($data['state'] == 2) {
+                $order_status = 'failed'; // was processing, and should be 'failed'
+                $note = __('Payment NOT approved.', 'cobru-for-wc');
+            } else if ($data['state'] == 4) {
+                $order_status = 'canceled';
+                $note = __('Payment refunded.', 'cobru-for-wc');
+            } else {
+                $order_status = 'failed';
+                $note = __('Payment response not expected.', 'cobru-for-wc');
             }
-        }
-        /**
-         * @since 1.5
-         */
-        else if ($payment_method == 'cobru-direct') {
-            $note   = __('The API Call Back has been reached, skiping process here to allow direct gateway do its job.', 'cobru-for-wc');
-            $order->add_order_note($note, false);
+            if ($order_status !== false) {
+                $order->set_status($order_status, $note);
+                $order->save();
+            } else {
+                $order->add_order_note($note, false);
+            }
+
+            try {
+                return new WP_REST_Response($data, 200);
+            } catch (Exception $e) {
+                return new WP_Error('cant-create', __('message', 'cobru-for-wc'), ['status' => 500]);
+            }
         }
     }
 }

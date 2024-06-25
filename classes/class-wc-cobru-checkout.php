@@ -48,7 +48,7 @@ class CobruWC_Checkout
 	{
 		if (is_checkout()) {
 			wp_enqueue_script(
-				'cobru',
+				'cobru-for-wc',
 				COBRU_PLUGIN_URL . 'assets/js/cobru.js',
 				['jquery'],
 				COBRU_PLUGIN_VER,

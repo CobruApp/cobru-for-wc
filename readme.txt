@@ -2,8 +2,8 @@
 Contributors: @k1-j0hnd03
 Tags: PSE, Tarjeta de crédito, Efecty, Corresponsal Bancolombia, Botón Bancolombia, Nequi, Daviplata, Rappipay, woocommerce, payments, ecommerce, checkout, cart, subscriptions, debit card, credit card
 Requires at least: 5.8
-Tested up to: 6.5.2
-Stable tag: 1.5.2
+Tested up to: 6.5.5
+Stable tag: 1.5.4
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,6 +45,12 @@ Pines de videojuegos, recarga de celulares, seguros
 - Powwi
 
 == Changelog ==
+
+= 1.5.4 =
+* Cambios en codigo para entrar en el directorio de plugins de Wordpres.org
+
+= 1.5.3 =
+* Mejora en el manejo de la respuesta diferente a state=3 en venta de TC Directa
 
 = 1.5.2 =
 * Cambios en codigo para entrar en el directorio de plugins de Wordpres.org

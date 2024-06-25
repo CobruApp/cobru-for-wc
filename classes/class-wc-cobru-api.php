@@ -297,11 +297,21 @@ class CobruWC_API
 						if ($data[1]['fields']['state'] == 3) {
 
 
-							$note   = __('Payment has been approved, New staus : ', 'cobru-for-wc') . $gw->status_to_set;
+							$note   = __('Payment has been approved, New staus : ', 'cobru-for-wc');
 
-							$order->set_status($gw->status_to_set);
+							$order->set_status($gw->status_to_set, $note);
 							$order->save();
-							$order->add_order_note($note, false);
+							return [
+								'result' => 'success',
+								'redirect' => $gw->get_return_url($order),
+							];
+						} else if ($data[1]['fields']['state'] == 1) { // Fix for payments reaching Cobru server timeout for direct payments
+
+
+							$note   = __('Payment is processing on the clients bank, lets give it some minutes to wait the response : ', 'cobru-for-wc');
+
+							$order->set_status('pending', $note);
+							$order->save();
 							return [
 								'result' => 'success',
 								'redirect' => $gw->get_return_url($order),
