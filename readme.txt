@@ -49,7 +49,7 @@ Pines de videojuegos, recarga de celulares, seguros
 = 1.5.5 =
 * Corrección en el boton de Nequi que no se mostraba en Cobru.me
 * PHP Code format indent in some lines
-* Este plugin NO es compatible con el carrito o checkout en bloques desde WooCommerce 8.3
+* Este plugin NO es compatible con el carrito o checkout en bloques desde WooCommerce 6.9
 
 = 1.5.4 =
 * Cambios en codigo para entrar en el directorio de plugins de Wordpres.org
