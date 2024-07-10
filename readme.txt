@@ -3,7 +3,7 @@ Contributors: @k1-j0hnd03
 Tags: PSE, Tarjeta de crédito, Efecty, Corresponsal Bancolombia, Botón Bancolombia, Nequi, Daviplata, Rappipay, woocommerce, payments, ecommerce, checkout, cart, subscriptions, debit card, credit card
 Requires at least: 5.8
 Tested up to: 6.5.5
-Stable tag: 1.5.4
+Stable tag: 1.5.5
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,6 +45,11 @@ Pines de videojuegos, recarga de celulares, seguros
 - Powwi
 
 == Changelog ==
+
+= 1.5.5 =
+* Corrección en el boton de Nequi que no se mostraba en Cobru.me
+* PHP Code format indent in some lines
+* Este plugin NO es compatible con el carrito o checkout en bloques desde WooCommerce 8.3
 
 = 1.5.4 =
 * Cambios en codigo para entrar en el directorio de plugins de Wordpres.org

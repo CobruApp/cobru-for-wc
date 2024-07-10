@@ -75,20 +75,19 @@ class WC_Gateway_Cobru extends WC_Payment_Gateway
 		$this->publishable_key = $this->testmode ? $this->get_option('test_publishable_key') : $this->get_option('publishable_key');
 
 		// ocastellar 01/09/2021  metodos de pago
-		$this->nequi  = 'yes' === $this->get_option('nequi');
-		$this->pse         = 'yes' === $this->get_option('pse');
-		$this->daviplata  = 'yes' === $this->get_option('daviplata');
-		$this->credit_card = 'yes' === $this->get_option('credit_card');
+		$this->nequi  			= 'yes' === $this->get_option('NEQUI');
+		$this->pse         		= 'yes' === $this->get_option('pse');
+		$this->daviplata  		= 'yes' === $this->get_option('daviplata');
+		$this->credit_card 		= 'yes' === $this->get_option('credit_card');
 		$this->bancolombia_transfer  = 'yes' === $this->get_option('bancolombia_transfer');
-		$this->bancolombia_qr  = 'yes' === $this->get_option('bancolombia_qr');
-		$this->efecty      = 'yes' === $this->get_option('efecty');
+		$this->bancolombia_qr  	= 'yes' === $this->get_option('bancolombia_qr');
+		$this->efecty      		= 'yes' === $this->get_option('efecty');
 		$this->corresponsal_bancolombia = 'yes' === $this->get_option('corresponsal_bancolombia');
-		$this->dale        = 'yes' === $this->get_option('dale');
-		$this->cobru       = 'yes' === $this->get_option('cobru');
-		// $this->baloto      = 'yes' === $this->get_option('baloto');
-		$this->BTC         = 'yes' === $this->get_option('BTC');
-		$this->BCH         = 'yes' === $this->get_option('BCH');
-		$this->DASH        = 'yes' === $this->get_option('DASH');
+		$this->dale        		= 'yes' === $this->get_option('dale');
+		$this->cobru       		= 'yes' === $this->get_option('cobru');
+		$this->BTC         		= 'yes' === $this->get_option('BTC');
+		$this->BCH         		= 'yes' === $this->get_option('BCH');
+		$this->DASH        		= 'yes' === $this->get_option('DASH');
 
 		// 1.3.0 options @j0hnd03
 		$this->cobru_minimun_ammount = $this->get_option('cobru_minimun_ammount') ? $this->get_option('cobru_minimun_ammount') : $this::MINIMUN_ORDER_AMOUNT;
@@ -99,22 +98,22 @@ class WC_Gateway_Cobru extends WC_Payment_Gateway
 		$this->credit_card_direct_gw = 'yes' === $this->get_option('credit_card_direct_gw');
 
 		$json_metodos_pago =  '{';
-		$json_metodos_pago .= '"NEQUI": ' . (boolval($this->nequi) ? 'true' : 'false') . ', ';
-		$json_metodos_pago .= '"pse": ' . (boolval($this->pse) ? 'true' : 'false') . ', ';
-		$json_metodos_pago .= '"daviplata": ' . (boolval($this->daviplata) ? 'true' : 'false') . ', ';
-		$json_metodos_pago .= '"credit_card": ' . (boolval($this->credit_card) ? 'true' : 'false') . ', ';
-		$json_metodos_pago .= '"bancolombia_transfer": ' . (boolval($this->bancolombia_transfer) ? 'true' : 'false') . ', ';
-		$json_metodos_pago .= '"bancolombia_qr": ' . (boolval($this->bancolombia_qr) ? 'true' : 'false') . ', ';
-		$json_metodos_pago .= '"efecty": ' . (boolval($this->efecty) ? 'true' : 'false') . ', ';
-		$json_metodos_pago .= '"corresponsal_bancolombia": ' . (boolval($this->corresponsal_bancolombia) ? 'true' : 'false') . ', ';
-		$json_metodos_pago .= '"dale": ' . (boolval($this->dale) ? 'true' : 'false') . ', ';
+		$json_metodos_pago .= '"pse":' 					. (boolval($this->pse) ? 'true' : 'false') . ', ';
+		$json_metodos_pago .= '"credit_card":' 			. (boolval($this->credit_card) ? 'true' : 'false') . ', ';
+		
+		$json_metodos_pago .= '"NEQUI":' 				. (boolval($this->nequi) ? 'true' : 'false') . ', ';
+		$json_metodos_pago .= '"daviplata":' 			. (boolval($this->daviplata) ? 'true' : 'false') . ', ';
+		$json_metodos_pago .= '"bancolombia_qr":' 		. (boolval($this->bancolombia_qr) ? 'true' : 'false') . ', ';
+		$json_metodos_pago .= '"bancolombia_transfer":' . (boolval($this->bancolombia_transfer) ? 'true' : 'false') . ', ';
+		$json_metodos_pago .= '"corresponsal_bancolombia":' . (boolval($this->corresponsal_bancolombia) ? 'true' : 'false') . ', ';
+		$json_metodos_pago .= '"dale":' 				. (boolval($this->dale) ? 'true' : 'false') . ', ';
+		$json_metodos_pago .= '"efecty":' 				. (boolval($this->efecty) ? 'true' : 'false') . ', ';
 
-		$json_metodos_pago .= '"cobru": ' . (boolval($this->cobru) ? 'true' : 'false') . ', ';
-		// $json_metodos_pago= '"baloto": ' . (boolval($this->baloto) ? 'true' : 'false') . ', ';
+		$json_metodos_pago .= '"cobru": ' 				. (boolval($this->cobru) ? 'true' : 'false') . ', ';
 
-		$json_metodos_pago .= '"BTC": ' . (boolval($this->BTC) ? 'true' : 'false') . ', ';
-		$json_metodos_pago .= '"BCH": ' . (boolval($this->BCH) ? 'true' : 'false') . ', ';
-		$json_metodos_pago .= '"DASH": ' . (boolval($this->DASH) ? 'true' : 'false') . '} ';
+		$json_metodos_pago .= '"BTC":' 					. (boolval($this->BTC) ? 'true' : 'false') . ', ';
+		$json_metodos_pago .= '"BCH":' 					. (boolval($this->BCH) ? 'true' : 'false') . ', ';
+		$json_metodos_pago .= '"DASH":' 				. (boolval($this->DASH) ? 'true' : 'false') . '} ';
 
 
 
@@ -395,19 +394,6 @@ class WC_Gateway_Cobru extends WC_Payment_Gateway
 				),
 				'default'           => 'yes'
 			],
-			// 'baloto'              => [
-
-			// 	'label'       => __('Baloto', 'cobru-for-wc'),
-			// 	'id'          => __('woocommerce_cobru_baloto', 'cobru-for-wc'),
-			// 	'type'        => 'checkbox',
-			// 	'class'       => 'online_payment_method',
-			// 	'description' => '',
-			// 	'custom_attributes' => array(
-			// 		'data-translate' => __('Select payment methods', 'cobru-for-wc'),
-			// 	),
-			// 	'default'           => 'yes'
-			// ],
-
 
 			// @j0hnd03 CREDIT CARD API DIRECT GATEWAY 
 
