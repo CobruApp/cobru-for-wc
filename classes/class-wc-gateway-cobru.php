@@ -1,5 +1,5 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly 
+if (!defined('ABSPATH')) exit; // Exit if accessed directly 
 
 /**
  * WC_Gateway_Cobru
@@ -100,7 +100,7 @@ class WC_Gateway_Cobru extends WC_Payment_Gateway
 		$json_metodos_pago =  '{';
 		$json_metodos_pago .= '"pse":' 					. (boolval($this->pse) ? 'true' : 'false') . ', ';
 		$json_metodos_pago .= '"credit_card":' 			. (boolval($this->credit_card) ? 'true' : 'false') . ', ';
-		
+
 		$json_metodos_pago .= '"NEQUI":' 				. (boolval($this->nequi) ? 'true' : 'false') . ', ';
 		$json_metodos_pago .= '"daviplata":' 			. (boolval($this->daviplata) ? 'true' : 'false') . ', ';
 		$json_metodos_pago .= '"bancolombia_qr":' 		. (boolval($this->bancolombia_qr) ? 'true' : 'false') . ', ';
@@ -439,46 +439,8 @@ class WC_Gateway_Cobru extends WC_Payment_Gateway
 	}
 
 	/*
-		 * Enqueues CSS/JS to get tokens
-		 */
-	public function enqueue_scripts()
-	{
-		// phpcs:ignore
-		if (!is_cart() && !is_checkout() && !isset($_GET['pay_for_order'])) {
-			return;
-		}
-
-		if ('no' === $this->enabled) {
-			return;
-		}
-
-		if (empty($this->private_key) || empty($this->publishable_key) || empty($this->refresh_token)) {
-			return;
-		}
-
-		if (!$this->testmode && !is_ssl()) {
-			return;
-		}
-
-		wp_register_script(
-			'cobru-for-wc',
-			COBRU_PLUGIN_URL . '/assets/js/cobru.js',
-			['jquery'],
-			COBRU_PLUGIN_VER,
-			['in_footer' => true]
-		);
-		wp_localize_script('cobru-for-wc', 'auth', [
-			'bearer' => $this->client->get_bearer(),
-			'secret' => $this->private_key,
-			'token'  => $this->publishable_key,
-		]);
-
-		wp_enqueue_script('cobru-for-wc');
-	}
-
-	/*
-		 * Processing payment
-		 */
+	* Processing payment
+	*/
 	public function process_payment($order_id)
 	{
 		$order     = wc_get_order($order_id);
@@ -580,12 +542,12 @@ class WC_Gateway_Cobru extends WC_Payment_Gateway
 	{
 		return [
 			'result'      => 'success',
-			'return'      => $this->get_return_url($order),
-			'cobruUrl'    => $this->get_cobru_url($order),
-			'callbackUrl' => $this->get_callback_url($order->get_id()),
-			'email'       => $order->get_billing_email(),
-			'phone'       => $order->get_billing_phone(),
-			'name'        => $order->get_billing_first_name() . ' ' . $order->get_billing_last_name(),
+			// 'return'      => $this->get_return_url($order),
+			'redirect'    => $this->get_cobru_url($order),
+			// 'callbackUrl' => $this->get_callback_url($order->get_id()),
+			// 'email'       => $order->get_billing_email(),
+			// 'phone'       => $order->get_billing_phone(),
+			// 'name'        => $order->get_billing_first_name() . ' ' . $order->get_billing_last_name(),
 
 		];
 	}

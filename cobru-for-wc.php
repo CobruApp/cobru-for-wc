@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Cobru para WooCommerce
  * 
@@ -14,16 +15,16 @@
  * Description: 	Plugin oficial del API de Cobru para ser usado con WooCommerce en Wordpress.
  * Author: 			COBRU.CO
  * Author URI: 		https://github.com/CobruApp/cobru-for-wc
- * Version: 		1.5.5
+ * Version: 		1.6.0
  * License: 		GPLv3
  * License URI: 	https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: 	cobru-for-wc
  * Domain Path:  	/languages
  */
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly 
+if (!defined('ABSPATH')) exit; // Exit if accessed directly 
 
 define('COBRU_PLUGIN_URL', plugins_url('/', __FILE__));
-define('COBRU_PLUGIN_VER', '1.5.5');
+define('COBRU_PLUGIN_VER', '1.6.0');
 
 define('COBRU_PLUGIN_FILE', __FILE__);
 define('COBRU_ROOT_DIR', __DIR__);
@@ -31,15 +32,13 @@ define('COBRU_JS_DIR', __DIR__ . '/js');
 define('COBRU_VENDOR_DIR', __DIR__ . '/vendor');
 define('COBRU_ASSETS_DIR', __DIR__ . '/assets');
 define('COBRU_ROOT_URL', plugin_dir_url(__FILE__));
-define('COBRU_JS_URL', COBRU_ROOT_URL . 'js/');
-define('COBRU_VENDOR_URL', COBRU_ROOT_URL . 'vendor/');
 define('COBRU_ASSETS_URL', COBRU_ROOT_URL . 'assets/');
+define('COBRU_JS_URL', COBRU_ASSETS_URL . 'js/');
 
 /**
  * @since 1.0
  */
 include 'classes/class-wc-cobru-api.php';
-include 'classes/class-wc-cobru-checkout.php';
 include 'classes/class-wc-cobru-rest-api.php';
 
 add_action('plugins_loaded', 'cobru_load_class');
@@ -95,3 +94,56 @@ function cobru_load_language()
 	load_plugin_textdomain('cobru-for-wc', false, $plugin_rel_path);
 }
 add_action('plugins_loaded', 'cobru_load_language');
+
+
+/**
+ * Woocommerce Checkout Block Support
+ * @since 1.6
+ * @autor @j0hnd03
+ */
+
+/**
+ * Step 1: Declare the plugin support WooCommerce Checkout Blocks.
+ */
+
+ /**
+ * Custom function to declare compatibility with cart_checkout_blocks feature 
+ */
+function declare_cart_checkout_blocks_compatibility()
+{
+	// Check if the required class exists
+	if (class_exists('\Automattic\WooCommerce\Utilities\FeaturesUtil')) {
+		// Declare compatibility for 'cart_checkout_blocks'
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('cart_checkout_blocks', __FILE__, true);
+	}
+}
+// Hook the custom function to the 'before_woocommerce_init' action
+add_action('before_woocommerce_init', 'declare_cart_checkout_blocks_compatibility');
+
+/**
+ * Step 2: Register WooCommerce Checkout Blocks payment method type registration.
+ */
+
+// Hook the custom function to the 'woocommerce_blocks_loaded' action
+add_action('woocommerce_blocks_loaded', 'oawoo_register_order_approval_payment_method_type');
+/**
+ * Custom function to register a payment method type
+ */
+function oawoo_register_order_approval_payment_method_type()
+{
+	// Check if the required class exists
+	if (!class_exists('Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType')) {
+		return;
+	}
+	// Include the custom Blocks Checkout class
+	include 'classes/class-wc-cobru-block-support.php';
+
+	// Hook the registration function to the 'woocommerce_blocks_payment_method_type_registration' action
+	add_action(
+		'woocommerce_blocks_payment_method_type_registration',
+		function (Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry) {
+			// Register an instance of My_Custom_Gateway_Blocks
+			$payment_method_registry->register(new WC_Gateway_Cobru_Blocks);
+		}
+	);
+}

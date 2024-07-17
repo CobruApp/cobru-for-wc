@@ -96,7 +96,6 @@ class CobruWC_API
 	 **/
 	public function create_cobru($order)
 	{
-
 		$items = $order->get_items();
 		$localidades = "";
 
@@ -133,20 +132,30 @@ class CobruWC_API
 			if (is_wp_error($response)) {
 				$error_message = $response->get_error_message();
 			} else {
-
 				$data          = json_decode($response['body']);
-				$error_message = is_object($data) ? $data->detail : $response['body'];
+				if (is_object($data)) {
+					if (property_exists($data, "detail")) {
+						$error_message =  $data->detail;
+					} elseif (property_exists($data, "amount")) {
+						$error_message =  $data->amount[0];
+					} else {
+						$error_message = $response['body'];
+					}
+				} else {
+					$error_message = $response['body'];
+				}
 			}
 
-			return [
+			$cobru_response = [
 				'result'  => 'error',
 				'message' => $error_message
 			];
+			return $cobru_response;
 		} else {
 			$data = json_decode($response['body']);
 
 			if ($data) {
-				return [
+				$cobru_response = [
 					'result'     => 'success',
 					'message'    => __('Cobru created', 'cobru-for-wc'),
 					'pk'         => $data->pk,
@@ -155,10 +164,12 @@ class CobruWC_API
 					'fee_amount' => $data->fee_amount,
 					'iva_amount' => $data->iva_amount,
 				];
+s				return $cobru_response;
 			} else {
+
 				return [
 					'result'  => 'error',
-					'message' => $data
+					'message' => $response['body']
 				];
 			}
 		}
