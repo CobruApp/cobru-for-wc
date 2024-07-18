@@ -38,9 +38,8 @@ final class WC_Gateway_Cobru_Blocks extends AbstractPaymentMethodType
     public function get_payment_method_data()
     {
         return [
-            'title' => $this->gateway->title,
-            'description' => $this->gateway->description,
+            'title' => "<strong> {$this->gateway->title} </strong>",
+            'description' => "<p>" . $this->gateway->description . "</p> <div class='cobru-checkout-logos'><img src='{$this->gateway->icon}'></div>",
         ];
     }
-
 }

@@ -164,7 +164,7 @@ class CobruWC_API
 					'fee_amount' => $data->fee_amount,
 					'iva_amount' => $data->iva_amount,
 				];
-s				return $cobru_response;
+				return $cobru_response;
 			} else {
 
 				return [

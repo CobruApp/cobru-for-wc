@@ -15,7 +15,7 @@
  * Description: 	Plugin oficial del API de Cobru para ser usado con WooCommerce en Wordpress.
  * Author: 			COBRU.CO
  * Author URI: 		https://github.com/CobruApp/cobru-for-wc
- * Version: 		1.6.0
+ * Version: 		1.6.1
  * License: 		GPLv3
  * License URI: 	https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: 	cobru-for-wc
@@ -24,7 +24,7 @@
 if (!defined('ABSPATH')) exit; // Exit if accessed directly 
 
 define('COBRU_PLUGIN_URL', plugins_url('/', __FILE__));
-define('COBRU_PLUGIN_VER', '1.6.0');
+define('COBRU_PLUGIN_VER', '1.6.1');
 
 define('COBRU_PLUGIN_FILE', __FILE__);
 define('COBRU_ROOT_DIR', __DIR__);
