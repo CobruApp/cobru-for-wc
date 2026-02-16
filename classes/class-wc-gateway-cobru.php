@@ -25,6 +25,7 @@ class WC_Gateway_Cobru extends WC_Payment_Gateway
 	public $publishable_key;
 
 	public $cobru;
+	public $breb;
 	public $nequi;
 	public $pse;
 	public $daviplata;
@@ -76,6 +77,7 @@ class WC_Gateway_Cobru extends WC_Payment_Gateway
 
 		// ocastellar 01/09/2021  metodos de pago
 		$this->nequi  			= 'yes' === $this->get_option('NEQUI');
+		$this->breb  			= 'yes' === $this->get_option('Bre-B');
 		$this->pse         		= 'yes' === $this->get_option('pse');
 		$this->daviplata  		= 'yes' === $this->get_option('daviplata');
 		$this->credit_card 		= 'yes' === $this->get_option('credit_card');
@@ -102,6 +104,7 @@ class WC_Gateway_Cobru extends WC_Payment_Gateway
 		$json_metodos_pago .= '"credit_card":' 			. (boolval($this->credit_card) ? 'true' : 'false') . ', ';
 
 		$json_metodos_pago .= '"NEQUI":' 				. (boolval($this->nequi) ? 'true' : 'false') . ', ';
+		$json_metodos_pago .= '"Bre-B":' 				. (boolval($this->breb) ? 'true' : 'false') . ', ';
 		$json_metodos_pago .= '"daviplata":' 			. (boolval($this->daviplata) ? 'true' : 'false') . ', ';
 		$json_metodos_pago .= '"bancolombia_qr":' 		. (boolval($this->bancolombia_qr) ? 'true' : 'false') . ', ';
 		$json_metodos_pago .= '"bancolombia_transfer":' . (boolval($this->bancolombia_transfer) ? 'true' : 'false') . ', ';
@@ -243,6 +246,17 @@ class WC_Gateway_Cobru extends WC_Payment_Gateway
 			'NEQUI'           => [
 				'label'       => __('NEQUI', 'cobru-for-wc'),
 				'id'          => "nequi",
+				'type'        => 'checkbox',
+				'class'       => 'online_payment_method',
+				'description' => '',
+				'custom_attributes' => array(
+					'data-translate' => __('Select payment methods', 'cobru-for-wc'),
+				),
+				'default'           => 'yes'
+			],
+			'Bre-B'              => [
+				'label'       => __('Bre-B', 'cobru-for-wc'),
+				'id'          => __('woocommerce_cobru_breb', 'cobru-for-wc'),
 				'type'        => 'checkbox',
 				'class'       => 'online_payment_method',
 				'description' => '',

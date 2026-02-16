@@ -1,9 +1,9 @@
 === Cobru for WC ===
 Contributors: @k1-j0hnd03
-Tags: PSE, Tarjeta de crédito, Efecty, Corresponsal Bancolombia, Botón Bancolombia, Nequi, Daviplata, Rappipay, woocommerce, payments, ecommerce, checkout, cart, subscriptions, debit card, credit card
+Tags: PSE, woocommerce, payments, ecommerce, breb
 Requires at least: 5.8
 Tested up to: 6.5.5
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -16,7 +16,7 @@ Somos Cobru - Pasarela de pago y billetera
 Plugin oficial para recibir pagos en Wordpress + WooCommerce en minutos.
 
 • Cobra
-Acepta pagos fácil con tarjetas, efectivo, QR, PSE, Billeteras
+Acepta pagos fácil con tarjetas, efectivo, QR, PSE, NEQUI, Bre-B, Billeteras
 
 • Envía
 Envía dinero a cuentas de bancos, puntos de retiro en efectivo y billeteras
@@ -36,15 +36,20 @@ Pines de videojuegos, recarga de celulares, seguros
 • Acepta múltiple medios de pago
 - PSE
 - Tarjeta de crédito
+- Bre-B
+- Nequi
+- Daviplata
 - Efecty
 - Corresponsal Bancolombia
 - Botón Bancolombia
-- Nequi
-- Daviplata
 - Rappipay
 - Powwi
 
 == Changelog ==
+
+= 1.6.2 =
+* Nueva forma de pago: Bre-B
+* Correcion de la URL del API debido a un fallo 404 causado por CloudFlare
 
 = 1.6.1 =
 * Eliminacion de codigo sin uso de las primeras versiones del plugin.

@@ -23,7 +23,7 @@ class CobruWC_API
 
 	public function __construct($testmode, $refresh_token, $token, $secret, $payment_method_enabled)
 	{
-		$this->api_url  = $testmode ? 'https://dev.cobru.co/' : 'https://prod.cobru.co/';
+		$this->api_url  = $testmode ? 'https://dev.cobru.co' : 'https://prod.cobru.co';
 		$this->refresh_token    = $refresh_token;
 		$this->token    = $token;
 		$this->secret   = $secret;
